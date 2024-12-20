@@ -19,7 +19,7 @@ export function HeroSection() {
           </div>
           <div className="relative h-[400px]">
             <Image
-              src="/images/GearSoft-logo.png"
+              src="/images/gearsoftlogo.png"
               alt="GearSoft"
               fill
               className="object-contain"

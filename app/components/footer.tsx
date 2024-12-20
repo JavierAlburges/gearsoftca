@@ -27,7 +27,7 @@ export function Footer() {
             <div>
               <Link href="/" className="flex items-center space-x-2 mb-4">
                 <Image 
-                  src="/images/GearSoft-logo.png"
+                  src="/images/gearsoftlogo.png"
                   alt="GearSoft Logo"
                   width={32}
                   height={32}
