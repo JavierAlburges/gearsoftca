@@ -11,7 +11,7 @@ interface FeatureSectionProps {
 export function FeatureSection({ title, description, imageUrl, reverse }: FeatureSectionProps) {
   return (
     <section className="py-20 bg-[var(--color-white)]">
-      <div className="container">
+      <div className="container mx-auto">
         <div className={`grid lg:grid-cols-2 gap-12 items-center ${reverse ? 'lg:flex-row-reverse' : ''}`}>
           <div className="space-y-6">
             <h2 className="text-3xl lg:text-4xl font-bold text-[var(--color-dark-blue)]">{title}</h2>

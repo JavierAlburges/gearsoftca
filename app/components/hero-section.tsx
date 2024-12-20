@@ -4,7 +4,7 @@ import Image from "next/image"
 export function HeroSection() {
   return (
     <section className="pt-32 pb-16 bg-[var(--color-dark-blue)]">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center self-center">
           <div className="space-y-6">
             <h1 className="text-4xl lg:text-6xl font-bold text-[var(--color-white)]">

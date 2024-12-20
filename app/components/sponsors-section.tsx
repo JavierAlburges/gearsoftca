@@ -10,7 +10,7 @@ const sponsors = [
 export function SponsorsSection() {
   return (
     <section className="py-12 bg-black">
-      <div className="container">
+      <div className="container mx-auto">
         <h2 className="text-xl font-semibold text-center mb-8">Nuestros patrocinadores</h2>
         <div className="flex justify-center items-center gap-12 flex-wrap">
           {sponsors.map((sponsor) => (

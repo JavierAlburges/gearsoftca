@@ -4,8 +4,8 @@ import Link from "next/link"
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center bg-[var(--color-dark-blue)] text-[var(--color-white)]">
-      <div className="container py-20">
+    <footer className="bg-[var(--color-dark-blue)] text-[var(--color-white)]">
+      <div className="container mx-auto py-20">
         <div className="text-center space-y-8 max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold">Comience con GearSoftCA hoy</h2>
           <p className="text-[var(--color-light-blue)]">
@@ -21,8 +21,8 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center bg-[var(--color-dark-blue))] border-t border-[var(--color-light-blue)]/10">
-        <div className="container py-8">
+      <div className="bg-[var(--color-dark-blue))] border-t border-[var(--color-light-blue)]/10">
+        <div className="container mx-auto py-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <Link href="/" className="flex items-center space-x-2 mb-4">
