@@ -11,10 +11,10 @@ export function HeroSection() {
               Soluciones de software innovadoras con GearSoftCA
             </h1>
             <p className="text-lg text-[var(--color-light-blue)]">
-              Empoderar a las empresas con soluciones tecnológicas de vanguardia y desarrollo de software experto.
+              Mejorando a las empresas con soluciones tecnológicas de vanguardia y desarrollo de software experto.
             </p>
             <Button size="lg" className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
-              Pruébalo gratis
+              Contacta con nosotros
             </Button>
           </div>
           <div className="relative h-[400px]">

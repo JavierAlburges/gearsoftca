@@ -26,8 +26,8 @@ export function NavBar() {
           <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Servicios</Button>
           <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Precios</Button>
           <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Contacto</Button>
-          <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)]">Login</Button>
-          <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">Try it Free</Button>
+          <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)]">Inicio de sesion</Button>
+          <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">Registro</Button>
         </div>
         <div className="md:hidden">
           <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -38,11 +38,11 @@ export function NavBar() {
       {isMenuOpen && (
         <div className="md:hidden bg-[var(--color-black)] p-4">
           <div className="flex flex-col space-y-2">
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Features</Button>
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Pricing</Button>
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Support</Button>
-            <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)] w-full">Login</Button>
-            <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 w-full">Try it Free</Button>
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Servicios</Button>
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Precios</Button>
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Contacto</Button>
+            <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)] w-full">Inicio de sesion</Button>
+            <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 w-full">Registro</Button>
           </div>
         </div>
       )}

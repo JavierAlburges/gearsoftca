@@ -2,22 +2,22 @@ import Image from "next/image"
 
 const testimonials = [
   {
-    quote: "GearSoft has revolutionized our development workflow.",
-    author: "Sarah Johnson",
-    role: "CTO",
-    avatar: "/images/avatar-1.png",
+    quote: "Gerente de proyectos con sólidos conocimientos en desarrollo web y móvil. Experiencia en el ciclo de vida completo del desarrollo de software, desde el diseño hasta la implementación. Mis habilidades incluyen programación en HTML, CSS, JavaScript, React, Node.js, React Native y Firebase.",
+    author: "Javier Alburges",
+    role: "Fundador",
+    avatar: "/images/javier.jpg",
   },
   {
-    quote: "The most reliable software development partner we've worked with.",
-    author: "Michael Chen",
-    role: "Tech Lead",
-    avatar: "/images/avatar-2.png",
+    quote: "Diseñadora apasionada y desarrolladora front-end. Centrado en crear experiencias de usuario significativas y atractivas a través del diseño y la resolución de problemas.",
+    author: "María Fernanda Ferrer",
+    role: "Graphic Designer | Front-End Developer",
+    avatar: "/images/maria.jpeg",
   },
   {
-    quote: "Outstanding technical expertise and customer service.",
-    author: "Emma Davis",
-    role: "Project Manager",
-    avatar: "/images/avatar-3.png",
+    quote: "Apasionado por crear experiencias móviles excepcionales. Experiencia en el diseño, desarrollo y mantenimiento de aplicaciones Android nativas utilizando Kotlin. Contribuyo activamente al crecimiento de GearSoftCA, optimizando y escalando nuestras soluciones.",
+    author: "Andonyth Espinoza",
+    role: "FullStack | Android | Kotlin | SQL",
+    avatar: "/images/andonyth.jpeg",
   },
 ]
 
@@ -25,7 +25,7 @@ export function TestimonialsSection() {
   return (
     <section className="py-20 bg-[var(--color-white)]">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-dark-blue)]">Lo que dicen nuestros clientes</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-dark-blue)]">Equipo de trabajo</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="bg-[var(--color-light-blue)]/10 p-6 rounded-lg border border-[var(--color-light-blue)]/20">
