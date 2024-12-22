@@ -7,7 +7,7 @@ const inter = Inter( { subsets: ['latin'] } )
 export const metadata: Metadata = {
   title: "GearSoftCA",
   verification: {google: "sIyRrMDGwLjnrlANbzwYf1tXWVcVNSjL_yf76grlDBo"},
-  description: "Esta es una empresa de servicio digitales profesionales de diferentes áreas relacionada con las tecnologías de la información",
+  description: "Gearsoftca: Tu aliado tecnológico. Somos una empresa de desarrollo de software con una pasión por crear soluciones innovadoras. Desde pequeñas startups hasta grandes corporaciones, ayudamos a nuestros clientes a alcanzar sus objetivos digitales.",
   openGraph: {
     title: "GearSoftCA",
     type: "website",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         alt: "GearSoftCA Logo",
       },
     ],
-    description: "Esta es una empresa de servicio digitales profesionales de diferentes áreas relacionada con las tecnologías de la información",
+    description: "Gearsoftca: Tu aliado tecnológico. Somos una empresa de desarrollo de software con una pasión por crear soluciones innovadoras. Desde pequeñas startups hasta grandes corporaciones, ayudamos a nuestros clientes a alcanzar sus objetivos digitales.",
   },
 };
 
