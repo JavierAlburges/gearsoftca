@@ -50,11 +50,21 @@ export function NavBar() {
       {isMenuOpen && (
         <div className="md:hidden bg-[var(--color-black)] p-4">
           <div className="flex flex-col space-y-2">
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Servicios</Button>
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Precios</Button>
-            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Contacto</Button>
-            <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)] w-full">Inicio de sesion</Button>
-            <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 w-full">Registro</Button>
+            <Link href="/#servicios">
+              <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Servicios</Button>
+            </Link>
+            <Link href="/#precios">
+              <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Precios</Button>
+            </Link>
+            <Link href="mailto:gearsoftca@gmail.com">
+              <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)] w-full justify-start">Contacto</Button>
+            </Link>
+            <Link href="/">
+              <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)] w-full">Inicio de sesion</Button>
+            </Link>
+            <Link href="/">
+              <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 w-full">Registro</Button>
+            </Link>
           </div>
         </div>
       )}
