@@ -1,5 +1,6 @@
 import { Button } from "@/app/components/button"
 import Image from "next/image"
+import Link from "next/link"
 
 export function HeroSection() {
   return (
@@ -13,9 +14,12 @@ export function HeroSection() {
             <p className="text-lg text-[var(--color-light-blue)]">
               Mejorando a las empresas con soluciones tecnológicas de vanguardia y desarrollo de software experto.
             </p>
-            <Button size="lg" className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
-              Contacta con nosotros
-            </Button>
+            <Link href="mailto:gearsoftca@gmail.com">
+              <Button size="lg" className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
+                Contacta con nosotros
+              </Button>
+            </Link>
+            
           </div>
           <div className="relative h-[400px]">
             <Image

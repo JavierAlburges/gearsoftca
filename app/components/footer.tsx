@@ -12,12 +12,16 @@ export function Footer() {
             Transforme su negocio con nuestras soluciones innovadoras
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button variant="outline" className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-black)]">
-              Programe una demostración
-            </Button>
-            <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
-              Contacto
-            </Button>
+            <Link href="https://api.whatsapp.com/send?phone=584127521730">
+              <Button variant="outline" className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-black)]">
+                Programe una demostración
+              </Button>
+            </Link>
+            <Link href="mailto:gearsoftca@gmail.com">
+              <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
+                Contacto
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

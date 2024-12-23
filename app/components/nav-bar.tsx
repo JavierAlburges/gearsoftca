@@ -23,11 +23,23 @@ export function NavBar() {
           <span className="font-semibold text-xl text-[var(--color-white)]">GearSoft</span>
         </Link>
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Servicios</Button>
-          <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Precios</Button>
-          <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Contacto</Button>
-          <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)]">Inicio de sesion</Button>
-          <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">Registro</Button>
+          <Link href="/" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Inicio</Link>
+          <Link href="/#servicios">
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Servicios</Button>
+          </Link>
+          <Link href="/#precios">
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Precios</Button>
+          </Link>
+          <Link href="mailto:gearsoftca@gmail.com">
+            <Button variant="ghost" className="text-[var(--color-white)] hover:text-[var(--color-light-blue)]">Contacto</Button>
+          </Link>
+          <Link href="/">
+            <Button variant="outline" className="text-[var(--color-white)] border-[var(--color-white)] hover:bg-[var(--color-white)] hover:text-[var(--color-dark-blue)]">Inicio de sesion</Button>
+          </Link>
+          <Link href="/">
+            <Button className="text-[var(--color-dark-blue)] bg-[var(--color-light-blue)] hover:bg-[var(--color-black)] hover:text-[var(--color-white)]">Registro</Button>
+          </Link>
+          
         </div>
         <div className="md:hidden">
           <Button variant="ghost" onClick={() => setIsMenuOpen(!isMenuOpen)}>

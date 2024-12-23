@@ -1,5 +1,6 @@
 import { Button } from "@/app/components/button"
 import { Check } from 'lucide-react'
+import Link from "next/link"
 
 const plans = [
   {
@@ -62,7 +63,10 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-[var(--color-black)] hover:bg-[var(--color-black)]/90 text-[var(--color-white)]">Comencemos</Button>
+              <Link href="https://api.whatsapp.com/send?phone=584127521730">
+                <Button className="w-full bg-[var(--color-black)] hover:bg-[var(--color-black)]/90 text-[var(--color-white)]">Comencemos</Button>
+              </Link>
+              
             </div>
           ))}
         </div>
