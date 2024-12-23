@@ -36,7 +36,9 @@ export default function Home() {
         <section id="precios">
           <PricingSection />
         </section>
-        <TestimonialsSection />
+        <section id="">
+          <TestimonialsSection />
+        </section>
       </main>
       <Footer />
     </>

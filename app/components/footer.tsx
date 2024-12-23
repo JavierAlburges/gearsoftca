@@ -46,25 +46,25 @@ export function Footer() {
             <div>
               <h3 className="font-semibold mb-4">Soluciones</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="#">Desarrollo personalizado</Link></li>
-                <li><Link href="#">Soluciones en la nube</Link></li>
-                <li><Link href="#">Software empresarial</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Desarrollo personalizado</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Soluciones en la nube</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Software empresarial</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Compañía</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="#">Sobre nosotros</Link></li>
-                <li><Link href="#">Trabajo</Link></li>
-                <li><Link href="#">Contacto</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Sobre nosotros</Link></li>
+                <li><Link href="https://www.linkedin.com/company/gearsoftca/">Trabajo</Link></li>
+                <li><Link href="mailto:gearsoftca@gmail.com">Contacto</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Recursos</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="#">Documentación</Link></li>
-                <li><Link href="#">Blog</Link></li>
-                <li><Link href="#">Ayuda</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Documentación</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Blog</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Ayuda</Link></li>
               </ul>
             </div>
           </div>
