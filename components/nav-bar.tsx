@@ -89,7 +89,7 @@ export function NavBar() {
           <Link href="/#equipo">
             <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Equipo</button>
           </Link>
-          <Link href="/politicas">
+          <Link href="/politicaDePrivacidad">
             <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Política de Privacidad</button>
           </Link>
           {!isLoggedIn && (
