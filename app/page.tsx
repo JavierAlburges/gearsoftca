@@ -5,9 +5,17 @@ import { Precios } from "@/components/precios"
 import { Equipo } from "@/components/equipo"
 import { Clientes } from "@/components/clientes";
 import { Footer } from "@/components/footer"
+import { useEffect } from "react";
 
 
 export default function Home() {
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      // Aquí puedes manejar el estado de autenticación si es necesario
+    }
+  }, []);
+
   return (
     <>
       <NavBar />

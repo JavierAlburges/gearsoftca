@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { authenticateWithGoogle, verifyUserInCollection } from "@/lib/firebaseUtils"
@@ -9,6 +9,13 @@ import { authenticateWithGoogle, verifyUserInCollection } from "@/lib/firebaseUt
 export function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleLogin = async () => {
     try {
