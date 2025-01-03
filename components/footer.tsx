@@ -1,4 +1,3 @@
-import { Button } from "@/app/components/button"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -12,15 +11,15 @@ export function Footer() {
             Transforme su negocio con nuestras soluciones innovadoras
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="https://api.whatsapp.com/send?phone=584127521730">
-              <Button variant="outline" className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-black)]">
+            <Link href="https://api.whatsapp.com/send?phone=584127521730" target="_blank" rel="noopener noreferrer">
+              <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">
                 Programe una demostración
-              </Button>
+              </button>
             </Link>
             <Link href="mailto:gearsoftca@gmail.com">
-              <Button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90">
+              <button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded">
                 Contacto
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
@@ -28,7 +27,7 @@ export function Footer() {
       <div className="bg-[var(--color-dark-blue))] border-t border-[var(--color-light-blue)]/10">
         <div className="container mx-auto py-8">
           <div className="grid md:grid-cols-4 gap-8">
-            <div>
+            <div className="mx-8">
               <Link href="/" className="flex items-center space-x-2 mb-4">
                 <Image 
                   src="/images/gearsoftlogo.png"

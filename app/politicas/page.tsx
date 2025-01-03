@@ -1,5 +1,5 @@
-import { NavBar } from "@/app/components/nav-bar"
-import { Footer } from "@/app/components/footer"
+import { NavBar } from "@/components/nav-bar"
+import { Footer } from "@/components/footer"
 import React from "react"
 
 

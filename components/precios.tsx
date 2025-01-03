@@ -1,5 +1,3 @@
-import { Button } from "@/app/components/button"
-import { Check } from 'lucide-react'
 import Link from "next/link"
 
 const plans = [
@@ -45,9 +43,9 @@ const plans = [
   },
 ]
 
-export function PricingSection() {
+export function Precios() {
   return (
-    <section className="py-20 bg-[var(--color-light-blue)]/10">
+    <section className="px-8 py-8 bg-[var(--color-light-blue)]/10">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-white)]">Elige tu plan para la Web o Aplicaciones Moviles</h2>
         <div className="grid md:grid-cols-3 gap-8">
@@ -58,15 +56,13 @@ export function PricingSection() {
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-2">
-                    <Check className="text-[var(--color-light-blue)]" size={20} />
                     <span className="text-[var(--color-dark-blue)]">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="https://api.whatsapp.com/send?phone=584127521730">
-                <Button className="w-full bg-[var(--color-black)] hover:bg-[var(--color-black)]/90 text-[var(--color-white)]">Comencemos</Button>
+              <Link href="https://api.whatsapp.com/send?phone=584127521730" target="_blank" rel="noopener noreferrer">
+                <button className="w-full bg-[var(--color-black)] hover:bg-[var(--color-black)]/90 text-[var(--color-white)] py-2 px-4 rounded">Contactanos</button>
               </Link>
-              
             </div>
           ))}
         </div>

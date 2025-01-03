@@ -1,20 +1,31 @@
-@import "../app/styles/colors.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: var(--color-dark-blue);
-  --background-start-rgb: var(--color-white);
-  --background-end-rgb: var(--color-white);
+  --color-dark-blue: #141d48;
+  --color-light-blue: #9bf0ed;
+  --color-white: #f5f4f2;
+  --color-black: #000000;
+  --color-error: #f44336;
+  --color-background: #141d48;
+  --color-text: #f5f4f2;
+  --color-tint: #9bf0ed;
+  --color-icon: #f5f4f2;
+  --color-tab-icon-default: #f5f4f2;
+  --color-tab-icon-selected: #9bf0ed;
+  --color-border: #000000;
+
+  --foreground-rgb: #f5f4f2;
+  --background-start-rgb: #141d48;
+  --background-end-rgb: #141d48;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: var(--color-white);
-    --background-start-rgb: var(--color-black);
-    --background-end-rgb: var(--color-dark-blue);
+    --foreground-rgb: #f5f4f2;
+    --background-start-rgb: #000000;
+    --background-end-rgb: #141d48;
   }
 }
 
@@ -28,3 +39,42 @@ body {
     var(--background-start-rgb);
 }
 
+/* Aplica los colores a otros elementos de la página */
+header {
+  background-color: var(--color-dark-blue);
+  color: var(--color-text);
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+  color: inherit;
+}
+
+a:hover {
+  color: var(--color-light-blue);;
+}
+
+button {
+  background-color: var(--color-dark-blue);
+  color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+button:hover {
+  background-color: var(--color-black);
+  color: var(--color-text);
+}
+
+footer {
+  background-color: var(--color-dark-blue);
+  color: var(--color-text);
+}
+
+nav {
+  border-bottom: 1px solid var(--color-white);
+  border-radius: 0;
+  position: static;
+}

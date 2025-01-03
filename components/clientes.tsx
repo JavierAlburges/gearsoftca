@@ -7,7 +7,7 @@ const sponsors = [
   { name: "PressStart", logo: "/images/pressstart.webp?height=40&width=40" },
 ]
 
-export function SponsorsSection() {
+export function Clientes() {
   return (
     <section className="py-12 bg-black">
       <div className="container mx-auto">

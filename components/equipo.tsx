@@ -21,9 +21,9 @@ const testimonials = [
   },
 ]
 
-export function TestimonialsSection() {
+export function Equipo() {
   return (
-    <section className="py-20 bg-[var(--color-white)]">
+    <section className="py-8 px-8 bg-[var(--color-white)]">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-dark-blue)]">Equipo de trabajo</h2>
         <div className="grid md:grid-cols-3 gap-8">

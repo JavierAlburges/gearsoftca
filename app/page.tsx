@@ -1,32 +1,32 @@
-import { NavBar } from "@/app/components/nav-bar"
-import { HeroSection } from "@/app/components/hero-section"
-import { FeatureSection } from "@/app/components/feature-section"
-import { PricingSection } from "@/app/components/pricing-section"
-import { TestimonialsSection } from "@/app/components/testimonials-section"
-import { SponsorsSection } from "@/app/components/sponsors-section";
-import { Footer } from "@/app/components/footer"
+import { NavBar } from "@/components/nav-bar"
+import { Presentacion } from "@/components/presentacion"
+import { Servicios } from "@/components/servicios"
+import { Precios } from "@/components/precios"
+import { Equipo } from "@/components/equipo"
+import { Clientes } from "@/components/clientes";
+import { Footer } from "@/components/footer"
 
 
 export default function Home() {
   return (
     <>
       <NavBar />
-      <main>
-        <HeroSection />
-        <SponsorsSection />
+      <main className="pt-16">
+        <Presentacion />
+        <Clientes />
         <section id="servicios">
-          <FeatureSection
+          <Servicios
             title="Desarrollo de software personalizado"
             description="Creamos soluciones de software a medida que se alinean perfectamente con las necesidades y objetivos de su negocio."
             imageUrl="/images/custom-software.png"
           />
-          <FeatureSection
+          <Servicios
             title="Soluciones en la nube"
             description="Aproveche el poder de la computación en la nube con nuestras soluciones en la nube escalables y seguras."
             imageUrl="/images/cloud-solutions.png"
             reverse
           />
-          <FeatureSection
+          <Servicios
             title="Integración empresarial"
             description="Integre perfectamente nuestras soluciones con sus sistemas y flujos de trabajo empresariales existentes."
             imageUrl="/images/enterprise-integration.png"
@@ -34,10 +34,10 @@ export default function Home() {
           
         </section>
         <section id="precios">
-          <PricingSection />
+          <Precios />
         </section>
-        <section id="">
-          <TestimonialsSection />
+        <section id="equipo">
+          <Equipo />
         </section>
       </main>
       <Footer />
