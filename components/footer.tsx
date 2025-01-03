@@ -62,7 +62,7 @@ export function Footer() {
               <h3 className="font-semibold mb-4">Recursos</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
                 <li><Link href="https://sites.google.com/view/gearsoft/recursos">Documentación</Link></li>
-                <li><Link href="/politicas">Politicas</Link></li>
+                <li><Link href="/politicas" hrefLang="politicas">Politicas</Link></li>
                 <li><Link href="https://sites.google.com/view/gearsoft/recursos">Ayuda</Link></li>
               </ul>
             </div>
