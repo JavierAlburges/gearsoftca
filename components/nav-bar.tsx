@@ -89,6 +89,9 @@ export function NavBar() {
           <Link href="/#equipo">
             <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Equipo</button>
           </Link>
+          <Link href="/politicas">
+            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Política de Privacidad</button>
+          </Link>
           {!isLoggedIn && (
             <button onClick={handleLogin} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center items-center">
               <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
