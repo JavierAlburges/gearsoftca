@@ -38,7 +38,8 @@ export function NavBar() {
         <div className="flex items-center space-x-4 md:hidden">
           <button onClick={handleLogin} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center flex items-center">
             <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
-            {isLoggedIn ? "Logeado" : "Iniciar Sesión con Google"}
+            <span className="hidden sm:inline">{isLoggedIn ? "Logeado" : "Iniciar Sesión con Google"}</span>
+            <span className="sm:hidden">Entrar</span>
           </button>
         </div>
         <div className="flex-col md:flex-row md:flex space-x-4 hidden md:space-y-0">
