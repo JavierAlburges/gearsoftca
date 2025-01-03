@@ -8,7 +8,6 @@ import { authenticateWithGoogle, verifyUserInCollection } from "@/lib/firebaseUt
 
 export function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -42,7 +41,7 @@ export function NavBar() {
             {isLoggedIn ? "Logeado" : "Iniciar Sesión con Google"}
           </button>
         </div>
-        <div className={`flex-col md:flex-row md:flex space-x-4 ${isMenuOpen ? "flex flex-col space-y-2" : "hidden"} md:flex md:space-y-0`}>
+        <div className="flex-col md:flex-row md:flex space-x-4 hidden md:space-y-0">
           <Link href="/#servicios">
             <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Servicios</button>
           </Link>
