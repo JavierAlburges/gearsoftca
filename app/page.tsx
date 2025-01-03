@@ -1,3 +1,5 @@
+"use client"
+
 import { NavBar } from "@/components/nav-bar"
 import { Presentacion } from "@/components/presentacion"
 import { Servicios } from "@/components/servicios"
