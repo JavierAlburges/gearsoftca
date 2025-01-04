@@ -15,11 +15,7 @@ const firebaseConfig = {
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 
-// Configuración de Google Auth Provider
-const googleProvider = new GoogleAuthProvider();
-
 // Exporta los servicios de Firebase que vas a usar
 export const auth = getAuth(app);
-export const firestore = getFirestore(app);
-export const provider = googleProvider;
-export { app }; // Exporta la instancia de la app para usarla en otros archivos
+export const db = getFirestore(app);
+export const googleProvider = new GoogleAuthProvider();
