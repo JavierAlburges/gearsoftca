@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { auth, db } from "@/firebaseConfig";
 import { verifyUserInCollection } from "@/lib/firebaseUtils";
-import { setDoc, doc, collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp } from "firebase/firestore";
 import Link from "next/link";
 
 interface Prestador {
@@ -52,14 +52,19 @@ export default function ServicioExpressControlPanel() {
 
   useEffect(() => {
     const fetchPrestadores = async () => {
-      const q = query(collection(db, "prestadoresDeServicios"), orderBy("timestamp", "desc"), limit(3));
+      const q = query(collection(db, "prestadoresDeServicios"), limit(10)); // Se elimina orderBy
       const querySnapshot = await getDocs(q);
-      const prestadoresList = querySnapshot.docs.map(doc => doc.data() as Prestador);
+      const prestadoresList = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+
+        return { ...data, id: doc.id } as Prestador & { id: string};
+      });
       setPrestadores(prestadoresList);
     };
-
+  
     fetchPrestadores();
   }, []);
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -85,7 +90,10 @@ export default function ServicioExpressControlPanel() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await setDoc(doc(db, "prestadoresDeServicios", docName), formData);
+      await setDoc(doc(db, "prestadoresDeServicios", docName), {
+        ...formData,
+        timestamp: serverTimestamp() // Agregar timestamp del servidor al guardar
+      });
       alert("Prestador de servicio registrado exitosamente");
       setFormData({
         ci: "",
