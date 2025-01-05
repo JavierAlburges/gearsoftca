@@ -11,12 +11,12 @@ export function Footer() {
             Transforme su negocio con nuestras soluciones innovadoras
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="https://api.whatsapp.com/send?phone=584127521730" target="_blank" rel="noopener noreferrer">
+            <Link href="mailto:gearsoftca@gmail.com">
               <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">
                 Programe una demostración
               </button>
             </Link>
-            <Link href="mailto:gearsoftca@gmail.com">
+            <Link href="https://api.whatsapp.com/send?phone=584127521730" target="_blank" rel="noopener noreferrer">
               <button className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded">
                 Contacto
               </button>
@@ -45,25 +45,25 @@ export function Footer() {
             <div>
               <h3 className="font-semibold mb-4">Soluciones</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Desarrollo personalizado</Link></li>
-                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Soluciones en la nube</Link></li>
-                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos">Software empresarial</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos" target="_blank" rel="noopener noreferrer">Desarrollo personalizado</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos" target="_blank" rel="noopener noreferrer">Soluciones en la nube</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/que-hacemos" target="_blank" rel="noopener noreferrer">Software empresarial</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Compañía</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Sobre nosotros</Link></li>
-                <li><Link href="https://www.linkedin.com/company/gearsoftca/">Trabajo</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos" target="_blank" rel="noopener noreferrer">Sobre nosotros</Link></li>
+                <li><Link href="https://www.linkedin.com/company/gearsoftca/" target="_blank" rel="noopener noreferrer">Trabajo</Link></li>
                 <li><Link href="mailto:gearsoftca@gmail.com">Contacto</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Recursos</h3>
               <ul className="space-y-2 text-[var(--color-white)]/70 hover:text-[var(--color-white)] transition-colors">
-                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Documentación</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos" target="_blank" rel="noopener noreferrer">Documentación</Link></li>
                 <li><Link href="/politicas" hrefLang="politicas">Politicas</Link></li>
-                <li><Link href="https://sites.google.com/view/gearsoft/recursos">Ayuda</Link></li>
+                <li><Link href="https://sites.google.com/view/gearsoft/recursos" target="_blank" rel="noopener noreferrer">Ayuda</Link></li>
               </ul>
             </div>
           </div>
