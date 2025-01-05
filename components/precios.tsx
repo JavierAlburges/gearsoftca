@@ -4,7 +4,7 @@ const plans = [
   {
     name: "Paquete Básico (Web)",
     price: "$300",
-    features: ["Diseño de página web de hasta 5 páginas.", "Diseño responsivo (adaptable a móviles y tables).", "Integración básica de redes sociales.", "Formulario de contacto", "Optimización básica para motores de búsqueda (SEO)."],
+    features: ["Diseño de página web de hasta 5 páginas.", "Diseño responsivo (adaptable a móviles y tablets).", "Integración básica de redes sociales.", "Formulário de contacto", "Optimización básica para motores de búsqueda (SEO)."],
   },
   {
     name: "Paquete Intermedio (Web)",
@@ -14,12 +14,12 @@ const plans = [
   {
     name: "Paquete Avanzado (Web)",
     price: "$6.000 en adelante",
-    features: ["Todo lo del Paquete Intermedio.", "Páginas ilimitadas.", "Tienda en línea (e-comerse) con hasta 50 productos.", "24/7 support", "Integración con sistemas de pago.", "Funcionalidades personalizadas (formularios avanzados, bases de datos, etc.).", "Soporte técnico durante 6 meses."],
+    features: ["Todo lo del Paquete Intermedio.", "Páginas ilimitadas.", "Tienda en línea (e-commerce) con hasta 50 productos.", "Soporte técnico 24/7. (durante 6 meses)", "Integración con sistemas de pago.", "Funcionalidades personalizadas (formularios avanzados, bases de datos, etc.)."],
   },
   {
     name: "Paquete Premium (Web)",
     price: "Personalizado",
-    features: ["Todo lo del Paquete Avanzado", "Desarrollo de aplicaciones web personalizadas.", "Integraciones avanzadas (CRM, ERP, etc.).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
+    features: ["Todo lo del Paquete Avanzado", "Desarrollo de aplicaciones web personalizadas.", "Integraciones avanzadas (CRM, ERP, entre otros).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
   },
   {
     name: "Paquete Básico (Móvil)",
@@ -39,7 +39,7 @@ const plans = [
   {
     name: "Paquete Premium (Móvil)",
     price: "$25,000 USD en adelante",
-    features: ["Todo lo del Paquete Avanzado." ,"Desarrollo de funcionalidades personalizadas.", "Integraciones avanzadas (CRM, ERP, etc.).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
+    features: ["Todo lo del Paquete Avanzado." ,"Desarrollo de funcionalidades personalizadas.", "Integraciones avanzadas (CRM, ERP, entre otros).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
   },
 ]
 

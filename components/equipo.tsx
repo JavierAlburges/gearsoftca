@@ -17,7 +17,7 @@ const testimonials = [
     quote: "Apasionado por crear experiencias móviles excepcionales. Experiencia en el diseño, desarrollo y mantenimiento de aplicaciones Android nativas utilizando Kotlin. Contribuyo activamente al crecimiento de GearSoftCA, optimizando y escalando nuestras soluciones.",
     author: "Andonyth Espinoza",
     role: "FullStack | Android | Kotlin | SQL",
-    avatar: "/images/andonyth.jpeg",
+    avatar: "/images/andonyth.jpg",
   },
 ]
 

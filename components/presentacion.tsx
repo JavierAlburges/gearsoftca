@@ -20,6 +20,11 @@ export function Presentacion() {
           <Image src="/images/gearsoftlogo.png" alt="GearSoft Logo" width={300} height={300} className="w-full max-w-xs"/>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4 animate-bounce"> {/* Flecha animada */}
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="white">
+          <path d="M12 17l-5-5h10z" />
+        </svg>
+      </div>
     </section>
   )
 }
