@@ -7,7 +7,7 @@ import { verifyUserInCollection } from "@/lib/firebaseUtils";
 import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp } from "firebase/firestore";
 import Link from "next/link";
 
-interface Prestador {
+interface Empleado {
   ci: string;
   email: string;
   linkedin: string;
@@ -20,7 +20,7 @@ interface Prestador {
 export default function ServicioExpressControlPanel() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState<Prestador>({
+  const [formData, setFormData] = useState<Empleado>({
     ci: "",
     email: "",
     linkedin: "",
@@ -30,7 +30,7 @@ export default function ServicioExpressControlPanel() {
     userName: ""
   });
   const [docName, setDocName] = useState("");
-  const [prestadores, setPrestadores] = useState<Prestador[]>([]);
+  const [empleados, setEmpleados] = useState<Empleado[]>([]);
 
   useEffect(() => {
   const checkUser = async () => {
@@ -51,18 +51,18 @@ export default function ServicioExpressControlPanel() {
   }, [router]);
 
   useEffect(() => {
-    const fetchPrestadores = async () => {
-      const q = query(collection(db, "prestadoresDeServicios"), limit(10)); // Se elimina orderBy
+    const fetchEmpleados = async () => {
+      const q = query(collection(db, "empleados"), limit(10));
       const querySnapshot = await getDocs(q);
-      const prestadoresList = querySnapshot.docs.map(doc => {
+      const empleadosList = querySnapshot.docs.map(doc => {
         const data = doc.data();
 
-        return { ...data, id: doc.id } as Prestador & { id: string};
+        return { ...data, id: doc.id } as Empleado & { id: string};
       });
-      setPrestadores(prestadoresList);
+      setEmpleados(empleadosList);
     };
   
-    fetchPrestadores();
+    fetchEmpleados();
   }, []);
   
 
@@ -90,11 +90,11 @@ export default function ServicioExpressControlPanel() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await setDoc(doc(db, "prestadoresDeServicios", docName), {
+      await setDoc(doc(db, "empleados", docName), {
         ...formData,
         timestamp: serverTimestamp() // Agregar timestamp del servidor al guardar
       });
-      alert("Prestador de servicio registrado exitosamente");
+      alert("Empleado registrado exitosamente");
       setFormData({
         ci: "",
         email: "",
@@ -106,7 +106,7 @@ export default function ServicioExpressControlPanel() {
       });
       setDocName("");
     } catch (error) {
-      console.error("Error registrando prestador de servicio: ", error);
+      console.error("Error registrando empleado: ", error);
     }
   };
 
@@ -131,7 +131,7 @@ export default function ServicioExpressControlPanel() {
         {/* Aquí puedes agregar más funcionalidades de administración */}
       </div>
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Registrar Prestador de Servicio</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Registrar Empleado</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-[var(--color-dark-blue)]">Nombre del Documento:</label>
@@ -238,17 +238,17 @@ export default function ServicioExpressControlPanel() {
         </form>
       </div>
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Lista de Prestadores de Servicio</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Lista de Empleados</h2>
         <ul className="text-black">
-          {prestadores.map(prestador => (
-            <li key={prestador.ci} className="p-2 border-b border-gray-300">
-              <p><strong>CI:</strong> {prestador.ci}</p>
-              <p><strong>Email:</strong> {prestador.email}</p>
-              <p><strong>LinkedIn:</strong> {prestador.linkedin}</p>
-              <p><strong>Número de Teléfono:</strong> {prestador.phoneNumber}</p>
-              <p><strong>Servicios Habilitados:</strong> {prestador.serviciosHabilitados.join(", ")}</p>
-              <p><strong>UID:</strong> {prestador.uid}</p>
-              <p><strong>Nombre de Usuario:</strong> {prestador.userName}</p>
+          {empleados.map(empleado => (
+            <li key={empleado.ci} className="p-2 border-b border-gray-300">
+              <p><strong>CI:</strong> {empleado.ci}</p>
+              <p><strong>Email:</strong> {empleado.email}</p>
+              <p><strong>LinkedIn:</strong> {empleado.linkedin}</p>
+              <p><strong>Número de Teléfono:</strong> {empleado.phoneNumber}</p>
+              <p><strong>Servicios Habilitados:</strong> {empleado.serviciosHabilitados.join(", ")}</p>
+              <p><strong>UID:</strong> {empleado.uid}</p>
+              <p><strong>Nombre de Usuario:</strong> {empleado.userName}</p>
             </li>
           ))}
         </ul>
