@@ -8,6 +8,7 @@ export default function Home() {
       <NavBar />
       <main className="bg-[var(--color-white)] p-8">
         <div className="container mx-auto my-20">
+          <h1 className="text-3xl font-bold text-[var(--color-dark-blue)] mb-4" id="politicas-de-privacidad">Politicas de Privacidad</h1>
           <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4">1. Recopilación de Información:</h2>
           <p className="text-lg text-[var(--color-black)] mb-2">Datos personales: Recopilamos información personal como nombre, dirección de correo electrónico y número de teléfono cuando los usuarios se registran en ServicioExpress.</p>
           <p className="text-lg text-[var(--color-black)] mb-2">Datos de uso: Recopilamos información sobre cómo los usuarios interactúan con nuestro servicio, incluyendo las páginas visitadas y las acciones realizadas.</p>
