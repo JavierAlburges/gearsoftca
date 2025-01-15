@@ -11,7 +11,7 @@ interface Empleado {
   ci: string;
   email: string;
   linkedin: string;
-  phoneNumber: string;
+  telefono: string;
   serviciosHabilitados: string[];
   uid: string;
   userName: string;
@@ -24,7 +24,7 @@ export default function ServicioExpressControlPanel() {
     ci: "",
     email: "",
     linkedin: "",
-    phoneNumber: "",
+    telefono: "",
     serviciosHabilitados: [],
     uid: "",
     userName: ""
@@ -99,7 +99,7 @@ export default function ServicioExpressControlPanel() {
         ci: "",
         email: "",
         linkedin: "",
-        phoneNumber: "",
+        telefono: "",
         serviciosHabilitados: [],
         uid: "",
         userName: ""
@@ -185,7 +185,7 @@ export default function ServicioExpressControlPanel() {
             <input
               type="text"
               name="phoneNumber"
-              value={formData.phoneNumber}
+              value={formData.telefono}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded text-black"
               placeholder="Ej: 04127521730"
@@ -245,7 +245,7 @@ export default function ServicioExpressControlPanel() {
               <p><strong>CI:</strong> {empleado.ci}</p>
               <p><strong>Email:</strong> {empleado.email}</p>
               <p><strong>LinkedIn:</strong> {empleado.linkedin}</p>
-              <p><strong>Número de Teléfono:</strong> {empleado.phoneNumber}</p>
+              <p><strong>Número de Teléfono:</strong> {empleado.telefono}</p>
               <p><strong>Servicios Habilitados:</strong> {empleado.serviciosHabilitados.join(", ")}</p>
               <p><strong>UID:</strong> {empleado.uid}</p>
               <p><strong>Nombre de Usuario:</strong> {empleado.userName}</p>
