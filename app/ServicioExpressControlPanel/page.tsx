@@ -4,18 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { auth, db } from "@/firebaseConfig";
 import { verifyUserInCollection } from "@/lib/firebaseUtils";
-import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp, where } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Link from "next/link";
-
-interface Empleado {
-  ci: string;
-  email: string;
-  linkedin: string;
-  telefono: string;
-  serviciosHabilitados: string[];
-  uid: string;
-  userName: string;
-}
+import { Empleado } from "@/constantes/interfaces";
 
 export default function ServicioExpressControlPanel() {
   const router = useRouter();
@@ -27,27 +19,34 @@ export default function ServicioExpressControlPanel() {
     telefono: "",
     serviciosHabilitados: [],
     uid: "",
-    userName: ""
+    userName: "",
+    numeroServiciosRealizados: 0,
+    foto: "",
+    fechaRegistro: new Date()
   });
-  const [docName, setDocName] = useState("");
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
 
   useEffect(() => {
-  const checkUser = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      const isVerified = await verifyUserInCollection(user);
-      if (!isVerified) {
-        router.push("/");
+    const checkUser = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const isVerified = await verifyUserInCollection(user);
+        if (!isVerified) {
+          router.push("/");
+        } else {
+          setLoading(false); // Muestra el panel si está verificado
+        }
       } else {
-        setLoading(false); // Muestra el panel si está verificado
-      }
-    } else {
-      router.push("/");
+        router.push("/");
       }
     };
 
-  checkUser();
+    checkUser();
   }, [router]);
 
   useEffect(() => {
@@ -57,14 +56,40 @@ export default function ServicioExpressControlPanel() {
       const empleadosList = querySnapshot.docs.map(doc => {
         const data = doc.data();
 
-        return { ...data, id: doc.id } as Empleado & { id: string};
+        return { ...data, id: doc.id } as Empleado & { id: string };
       });
       setEmpleados(empleadosList);
     };
-  
+
     fetchEmpleados();
   }, []);
-  
+
+  const handleSearch = async (term: string) => {
+    if (term.trim() === "") {
+      setEmpleados([]);
+      return;
+    }
+
+    const q = query(collection(db, "empleados"), where("ci", ">=", term), where("ci", "<=", term + "\uf8ff"), limit(5));
+    const querySnapshot = await getDocs(q);
+    const empleadosList = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+
+      return { ...data, id: doc.id } as Empleado & { id: string };
+    });
+    setEmpleados(empleadosList);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    const timeout = setTimeout(() => {
+      handleSearch(e.target.value);
+    }, 1000);
+    setSearchTimeout(timeout);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -83,17 +108,47 @@ export default function ServicioExpressControlPanel() {
     }
   };
 
-  const handleDocNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDocName(e.target.value);
+  const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNombre(e.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      userName: `${e.target.value} ${apellido}`
+    }));
+  };
+
+  const handleApellidoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setApellido(e.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      userName: `${nombre} ${e.target.value}`
+    }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await setDoc(doc(db, "empleados", docName), {
-        ...formData,
-        timestamp: serverTimestamp() // Agregar timestamp del servidor al guardar
-      });
+      if (file) {
+        const storage = getStorage();
+        const fileRef = ref(storage, `fotosEmpleados/${formData.ci}`);
+        await uploadBytes(fileRef, file);
+        const fotoURL = await getDownloadURL(fileRef);
+        await setDoc(doc(db, "empleados", formData.ci), {
+          ...formData,
+          foto: fotoURL,
+          timestamp: serverTimestamp()
+        });
+      } else {
+        await setDoc(doc(db, "empleados", formData.ci), {
+          ...formData,
+          timestamp: serverTimestamp()
+        });
+      }
       alert("Empleado registrado exitosamente");
       setFormData({
         ci: "",
@@ -102,9 +157,14 @@ export default function ServicioExpressControlPanel() {
         telefono: "",
         serviciosHabilitados: [],
         uid: "",
-        userName: ""
+        userName: "",
+        numeroServiciosRealizados: 0,
+        foto: "",
+        fechaRegistro: new Date()
       });
-      setDocName("");
+      setNombre("");
+      setApellido("");
+      setFile(null);
     } catch (error) {
       console.error("Error registrando empleado: ", error);
     }
@@ -134,17 +194,6 @@ export default function ServicioExpressControlPanel() {
         <h2 className="text-2xl font-semibold mb-4 text-blue-600">Registrar Empleado</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[var(--color-dark-blue)]">Nombre del Documento:</label>
-            <input
-              type="text"
-              value={docName}
-              onChange={handleDocNameChange}
-              className="w-full p-2 border border-gray-300 rounded text-black"
-              placeholder="Ej: V12345678"
-              required
-            />
-          </div>
-          <div>
             <label className="block text-[var(--color-dark-blue)]">CI:</label>
             <input
               type="text"
@@ -153,6 +202,30 @@ export default function ServicioExpressControlPanel() {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded text-black"
               placeholder="Ej: V12345678"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-[var(--color-dark-blue)]">Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={nombre}
+              onChange={handleNombreChange}
+              className="w-full p-2 border border-gray-300 rounded text-black"
+              placeholder="Ej: Javier"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-[var(--color-dark-blue)]">Apellido:</label>
+            <input
+              type="text"
+              name="apellido"
+              value={apellido}
+              onChange={handleApellidoChange}
+              className="w-full p-2 border border-gray-300 rounded text-black"
+              placeholder="Ej: Alburges"
               required
             />
           </div>
@@ -184,7 +257,7 @@ export default function ServicioExpressControlPanel() {
             <label className="block text-[var(--color-dark-blue)]">Número de Teléfono:</label>
             <input
               type="text"
-              name="phoneNumber"
+              name="telefono"
               value={formData.telefono}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded text-black"
@@ -223,14 +296,11 @@ export default function ServicioExpressControlPanel() {
             />
           </div>
           <div>
-            <label className="block text-[var(--color-dark-blue)]">Nombre de Usuario:</label>
+            <label className="block text-[var(--color-dark-blue)]">Foto:</label>
             <input
-              type="text"
-              name="userName"
-              value={formData.userName}
-              onChange={handleChange}
+              type="file"
+              onChange={handleFileChange}
               className="w-full p-2 border border-gray-300 rounded text-black"
-              placeholder="Ej: Javier Alburges"
               required
             />
           </div>
@@ -238,8 +308,15 @@ export default function ServicioExpressControlPanel() {
         </form>
       </div>
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Lista de Empleados</h2>
-        <ul className="text-black">
+        <h2 className="text-2xl font-semibold mb-4 text-blue-600">Buscar Empleados</h2>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full p-2 border border-gray-300 rounded text-black"
+          placeholder="Buscar por CI"
+        />
+        <ul className="text-black mt-4">
           {empleados.map(empleado => (
             <li key={empleado.ci} className="p-2 border-b border-gray-300">
               <p><strong>CI:</strong> {empleado.ci}</p>
@@ -254,5 +331,5 @@ export default function ServicioExpressControlPanel() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
