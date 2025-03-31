@@ -269,7 +269,7 @@ export default function Documentacion() {
               </ul>
               <div className="flex-1 flex justify-center items-center">
                 <Image
-                  src="/images/frameworks.jpg"
+                  src="/images/Frameworks.jpg"
                   alt="Frameworks"
                   width={500}
                   height={500}
