@@ -8,7 +8,7 @@ const inter = Inter( { subsets: ['latin'] } )
 export const metadata: Metadata = {
   title: "GearSoftCA",
   verification: {google: "sIyRrMDGwLjnrlANbzwYf1tXWVcVNSjL_yf76grlDBo"},
-  description: "Gearsoftca: Tu aliado tecnológico. Somos una empresa innovadora especializada en el desarrollo de software a medida. Creamos soluciones tecnológicas que impulsan el crecimiento de nuestros clientes. Nuestros servicios incluyen desarrollo web, aplicaciones móviles, y sistemas de gestión empresarial.",
+  description: "GearSoftCA: Expertos en desarrollo de aplicaciones móviles, diseño web y software para empresas en Maracaibo, Zulia y Venezuela. ¡Solicita tu presupuesto y transforma tu negocio con soluciones innovadoras!",
   openGraph: {
     title: "GearSoftCA",
     type: "website",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         alt: "GearSoftCA Logo",
       },
     ],
-    description: "Gearsoftca: Tu aliado tecnológico. Somos una empresa innovadora especializada en el desarrollo de software a medida. Creamos soluciones tecnológicas que impulsan el crecimiento de nuestros clientes. Nuestros servicios incluyen desarrollo web, aplicaciones móviles, y sistemas de gestión empresarial.",
+    description: "GearSoftCA: Expertos en desarrollo de aplicaciones móviles, diseño web y software para empresas en Maracaibo, Zulia y Venezuela. ¡Solicita tu presupuesto y transforma tu negocio con soluciones innovadoras!",
   },
 };
 

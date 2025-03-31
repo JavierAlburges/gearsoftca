@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import React from "react"
 
 
-export default function Home() {
+export default function Politicas() {
   return (
     <>
       <NavBar />

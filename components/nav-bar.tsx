@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { authenticateWithGoogle, verifyUserInCollection } from "@/lib/firebaseUtils"
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 
 export function NavBar() {
@@ -14,12 +14,22 @@ export function NavBar() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        const userVerified = await verifyUserInCollection(user);
+        setIsVerified(userVerified);
+        if (!userVerified) {
+          alert("Usuario no autorizado.");
+          await handleLogout();
+        }
+      } else {
+        setIsLoggedIn(false);
+        setIsVerified(false);
+      }
+    });
 
-    if (storedUser) {
-      setIsLoggedIn(true);
-      verifyUserInCollection(JSON.parse(storedUser)).then(setIsVerified);
-    }
+    return () => unsubscribe();
   }, []);
 
   const handleLogin = async () => {
@@ -27,11 +37,11 @@ export function NavBar() {
       const user = await authenticateWithGoogle();
       const userVerified = await verifyUserInCollection(user);
       if (userVerified) {
-        localStorage.setItem("user", JSON.stringify(user));
         setIsLoggedIn(true);
         setIsVerified(true);
       } else {
         alert("Usuario no autorizado.");
+        await handleLogout();
       }
     } catch (error) {
       alert("Error durante la autenticación.");
@@ -42,7 +52,6 @@ export function NavBar() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      localStorage.removeItem("user");
       setIsLoggedIn(false);
       setIsVerified(false);
       router.push("/");
@@ -63,49 +72,57 @@ export function NavBar() {
         </Link>
         <div className="flex items-center space-x-4 md:hidden">
           {!isLoggedIn && (
-            <button onClick={handleLogin} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center flex items-center">
+            <button onClick={handleLogin} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
               <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
-              <span className="hidden sm:inline">Iniciar Sesión con Google</span>
+              <span>Iniciar Sesión con Google</span>
             </button>
           )}
           {isLoggedIn && isVerified && (
-            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center flex items-center">
+            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
               <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
             </button>
           )}
           {isLoggedIn && (
-            <button onClick={handleLogout} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center flex items-center">
+            <button onClick={handleLogout} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
               <Image src="/images/singing-out.png" width={20} height={20} alt="Sign Out Icon" className="mr-2"/>
             </button>
           )}
         </div>
         <div className="flex-col md:flex-row md:flex space-x-4 hidden md:space-y-0">
           <Link href="/#servicios">
-            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Servicios</button>
+            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white)] py-2 px-4 rounded text-sm font-medium">
+              Servicios
+            </button>
           </Link>
           <Link href="/#precios">
-            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Precios</button>
+            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white)] py-2 px-4 rounded text-sm font-medium">
+              Precios
+            </button>
           </Link>
           <Link href="/#equipo">
-            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Equipo</button>
+            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white)] py-2 px-4 rounded text-sm font-medium">
+              Equipo
+            </button>
           </Link>
           <Link href="/politicasDePrivacidad">
-            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white] py-2 px-4 rounded">Política de Privacidad</button>
+            <button className="text-[var(--color-dark-blue)] border-[var(--color-white)] bg-[var(--color-white)] hover:bg-[var(--color-white)]/90 hover:text-[var(--color-white)] py-2 px-4 rounded text-sm font-medium">
+              Política de Privacidad
+            </button>
           </Link>
           {!isLoggedIn && (
-            <button onClick={handleLogin} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center items-center">
+            <button onClick={handleLogin} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium items-center">
               <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
               Iniciar Sesión con Google
             </button>
           )}
           {isLoggedIn && isVerified && (
-            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center items-center">
+            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium items-center">
               <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
               Panel de Administración
             </button>
           )}
           {isLoggedIn && (
-            <button onClick={handleLogout} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-1 px-2 rounded text-base text-center items-center">
+            <button onClick={handleLogout} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium items-center">
               <Image src="/images/singing-out.png" width={20} height={20} alt="Sign Out Icon" className="mr-2"/>
               Cerrar Sesión
             </button>

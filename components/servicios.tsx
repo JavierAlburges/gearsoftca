@@ -16,7 +16,7 @@ export function Servicios({ title, description, imageUrl, reverse }: ServiciosPr
           <div className="m-16 space-y-6">
             <h2 className="text-3xl lg:text-4xl font-bold text-[var(--color-dark-blue)]">{title}</h2>
             <p className="text-lg text-[var(--color-dark-blue)]">{description}</p>
-            <Link href="https://api.whatsapp.com/send?phone=584127521730" target="_blank" rel="noopener noreferrer">
+            <Link href="https://wa.me/584127521730" target="_blank" rel="noopener noreferrer">
               <button className="mt-8 bg-[var(--color-dark-blue)] hover:bg-[var(--color-dark-blue)]/90 text-[var(--)]">Más información</button>
             </Link>
           </div>

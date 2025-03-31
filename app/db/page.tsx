@@ -4,7 +4,7 @@ import { sql } from '@vercel/postgres';
 
 const { rows } = await sql`SELECT * FROM "user"`;
 
-export default function PaginaDB() {
+export default function DB() {
   return (
     <>
       <div className='container mx-auto p-4'>

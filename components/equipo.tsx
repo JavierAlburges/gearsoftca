@@ -23,22 +23,25 @@ const testimonials = [
 
 export function Equipo() {
   return (
-    <section className="py-8 px-8 bg-[var(--color-white)]">
+    <section className="py-16 px-8 bg-[var(--color-white)]">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-dark-blue)]">Equipo de trabajo</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-[var(--color-light-blue)]/10 p-6 rounded-lg border border-[var(--color-light-blue)]/20">
-              <p className="text-lg mb-4 text-[var(--color-dark-blue)]">{testimonial.quote}</p>
-              <div className="flex items-center gap-4">
+            <div
+              key={index}
+              className="bg-[var(--color-light-blue)]/10 p-6 rounded-lg border border-[var(--color-light-blue)]/20 shadow-lg transform transition-transform hover:scale-105"
+            >
+              <p className="text-lg mb-6 text-[var(--color-dark-blue)] text-center">{testimonial.quote}</p>
+              <div className="flex flex-col items-center gap-4">
                 <Image
                   src={testimonial.avatar}
                   alt={testimonial.author}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
+                  width={80}
+                  height={80}
+                  className="rounded-full border-2 border-[var(--color-light-blue)]"
                 />
-                <div>
+                <div className="text-center">
                   <p className="font-semibold text-[var(--color-dark-blue)]">{testimonial.author}</p>
                   <p className="text-sm text-[var(--color-dark-blue)]/70">{testimonial.role}</p>
                 </div>

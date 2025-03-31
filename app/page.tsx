@@ -16,7 +16,7 @@ export default function Home() {
       <main className="pt-16">
         <Presentacion />
         <Clientes />
-        <section id="servicios">
+        <section id="servicios" className="scroll-mt-16">
           <Servicios
             title="Desarrollo de software personalizado"
             description="Creamos soluciones de software a medida que se alinean perfectamente con las necesidades y objetivos de su negocio."
@@ -33,12 +33,11 @@ export default function Home() {
             description="Integre perfectamente nuestras soluciones con sus sistemas y flujos de trabajo empresariales existentes."
             imageUrl="/images/enterprise-integration.png"
           />
-          
         </section>
-        <section id="precios">
+        <section id="precios" className="scroll-mt-24">
           <Precios />
         </section>
-        <section id="equipo">
+        <section id="equipo" className="scroll-mt-16">
           <Equipo />
         </section>
       </main>

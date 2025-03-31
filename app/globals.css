@@ -19,6 +19,8 @@
   --foreground-rgb: #f5f4f2;
   --background-start-rgb: #141d48;
   --background-end-rgb: #141d48;
+  --color-gradient-start: #1e3a8a; /* Azul oscuro */
+  --color-gradient-end: #000000; /* Negro */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,10 +51,15 @@ a {
   text-decoration: none;
   color: var(--color-text);
   color: inherit;
+  text-align: center;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a:hover {
-  color: var(--color-light-blue);;
+  color: var(--color-light-blue);
 }
 
 button {
