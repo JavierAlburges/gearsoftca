@@ -30,7 +30,7 @@ export function NavBar() {
     });
 
     return () => unsubscribe();
-  }, []);
+  },);
 
   const handleLogin = async () => {
     try {
@@ -73,8 +73,8 @@ export function NavBar() {
         <div className="flex items-center space-x-4 md:hidden">
           {!isLoggedIn && (
             <button onClick={handleLogin} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
-              <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2 md:hidden"/>
-              <span className="hidden md:inline">Iniciar Sesión con Google</span>
+              <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
+              <span>Iniciar Sesión con Google</span>
             </button>
           )}
           {isLoggedIn && isVerified && (
