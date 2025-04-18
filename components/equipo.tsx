@@ -43,7 +43,7 @@ export function Equipo() {
                 />
                 <div className="text-center">
                   <p className="font-semibold text-[var(--color-dark-blue)]">{testimonial.author}</p>
-                  <p className="text-sm text-[var(--color-dark-blue)]/70">{testimonial.role}</p>
+                  <p className="text-sm text-[var(--color-dark-blue)]">{testimonial.role}</p>
                 </div>
               </div>
             </div>
