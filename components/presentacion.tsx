@@ -6,7 +6,7 @@ export function Presentacion() {
     <section className="py-12 bg-[var(--color-dark-blue)] text-[var(--color-white)] h-screen">
       <div className="container mx-auto flex flex-col md:flex-row justify-center items-center">
         <div className="p-8 text-center md:text-left flex flex-col justify-center align-center">
-          <h1 className="text-5xl font-bold mb-4">GearSoftCA: Calidad y Compromiso en Cada Línea de Código</h1>
+          <h1 className="text-5xl font-bold mb-4">GearSoftCA: Impulsando tu negocio con software innovador, en todas las plataformas.</h1>
           <p className="text-lg mb-8">
           Desarrollamos soluciones de software personalizadas, con un enfoque colaborativo, para impulsar el crecimiento de tu negocio en Maracaibo, Zulia y Venezuela.
           </p>
