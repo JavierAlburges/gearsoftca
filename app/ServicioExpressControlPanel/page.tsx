@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { auth, db } from "@/firebaseConfig";
 import { verifyUserInCollection } from "@/lib/firebaseUtils";
 import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp, where } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Link from "next/link";
 import { Empleado } from "@/constantes/interfaces";
 
@@ -25,7 +24,6 @@ export default function ServicioExpressControlPanel() {
     fechaRegistro: new Date()
   });
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
-  const [file, setFile] = useState<File | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const [nombre, setNombre] = useState("");
@@ -124,31 +122,14 @@ export default function ServicioExpressControlPanel() {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (file) {
-        const storage = getStorage();
-        const fileRef = ref(storage, `fotosEmpleados/${formData.ci}`);
-        await uploadBytes(fileRef, file);
-        const fotoURL = await getDownloadURL(fileRef);
-        await setDoc(doc(db, "empleados", formData.ci), {
-          ...formData,
-          foto: fotoURL,
-          timestamp: serverTimestamp()
-        });
-      } else {
-        await setDoc(doc(db, "empleados", formData.ci), {
-          ...formData,
-          timestamp: serverTimestamp()
-        });
-      }
+      await setDoc(doc(db, "empleados", formData.ci), {
+        ...formData,
+        foto: "", // Campo vacío para la foto
+        timestamp: serverTimestamp()
+      });
       alert("Empleado registrado exitosamente");
       setFormData({
         ci: "",
@@ -164,7 +145,6 @@ export default function ServicioExpressControlPanel() {
       });
       setNombre("");
       setApellido("");
-      setFile(null);
     } catch (error) {
       console.error("Error registrando empleado: ", error);
     }
@@ -292,15 +272,6 @@ export default function ServicioExpressControlPanel() {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded text-black"
               placeholder="Ej: Esta informacion la obtienes en Firebase"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-[var(--color-dark-blue)]">Foto:</label>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="w-full p-2 border border-gray-300 rounded text-black"
               required
             />
           </div>
