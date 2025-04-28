@@ -3,31 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --color-dark-blue: #141d48;
-  --color-light-blue: #9bf0ed;
-  --color-white: #f5f4f2;
+  --color-dark-blue: #131D47;
+  --color-light-blue: #9AECED;
+  --color-white: #F1F1F1;
   --color-black: #000000;
   --color-error: #f44336;
-  --color-background: #141d48;
-  --color-text: #f5f4f2;
-  --color-tint: #9bf0ed;
-  --color-icon: #f5f4f2;
-  --color-tab-icon-default: #f5f4f2;
-  --color-tab-icon-selected: #9bf0ed;
+  --color-background: #131D47;
+  --color-text: #F1F1F1;
+  --color-tint: #9AECED;
+  --color-icon: #F1F1F1;
+  --color-tab-icon-default: #F1F1F1;
+  --color-tab-icon-selected: #9AECED;
   --color-border: #000000;
 
-  --foreground-rgb: #f5f4f2;
-  --background-start-rgb: #141d48;
-  --background-end-rgb: #141d48;
+  --foreground-rgb: #F1F1F1;
+  --background-start-rgb: #131D47;
+  --background-end-rgb: #131D47;
   --color-gradient-start: #1e3a8a; /* Azul oscuro */
   --color-gradient-end: #000000; /* Negro */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: #f5f4f2;
+    --foreground-rgb: #F1F1F1;
     --background-start-rgb: #000000;
-    --background-end-rgb: #141d48;
+    --background-end-rgb: #131D47;
   }
 }
 
