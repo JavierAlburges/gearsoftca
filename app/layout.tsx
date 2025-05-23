@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     url: "https://gearsoftca.vercel.app/",
     images: [
       {
-        url: "https://gearsoftca.vercel.app/images/gearsoftlogo.png",
+        url: "https://gearsoftca.vercel.app/images/gearsoftlogoazul.jpg",
         width: 800,
         height: 600,
         alt: "GearSoftCA Logo",
