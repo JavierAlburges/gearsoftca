@@ -5,6 +5,7 @@
 :root {
   --color-dark-blue: #131D47;
   --color-light-blue: #9AECED;
+  --color-gray: #4C4C4C;
   --color-white: #F1F1F1;
   --color-black: #000000;
   --color-error: #f44336;
@@ -14,7 +15,7 @@
   --color-icon: #F1F1F1;
   --color-tab-icon-default: #F1F1F1;
   --color-tab-icon-selected: #9AECED;
-  --color-border: #000000;
+  --color-border: #4C4C4C;
 
   --foreground-rgb: #F1F1F1;
   --background-start-rgb: #131D47;
