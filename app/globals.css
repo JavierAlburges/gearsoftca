@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --color-dark-blue: #131D47;
-  --color-light-blue: #9AECED;
-  --color-gray: #4C4C4C;
-  --color-white: #F1F1F1;
-  --color-black: #000000;
+  --color-dark-blue: #131D47; /* Principal */
+  --color-light-blue: #9AECED; /* Secundario */
+  --color-gray: #4C4C4C;      /* Complemento */
+  --color-white: #F1F1F1;     /* Blanco */
+  --color-black: #000000;     /* Negro */
   --color-error: #f44336;
-  --color-background: #131D47;
-  --color-text: #F1F1F1;
-  --color-tint: #9AECED;
-  --color-icon: #F1F1F1;
-  --color-tab-icon-default: #F1F1F1;
-  --color-tab-icon-selected: #9AECED;
-  --color-border: #4C4C4C;
+  --color-background: var(--color-dark-blue);
+  --color-text: var(--color-white);
+  --color-tint: var(--color-light-blue);
+  --color-icon: var(--color-white);
+  --color-tab-icon-default: var(--color-white);
+  --color-tab-icon-selected: var(--color-light-blue);
+  --color-border: var(--color-gray);
 
   --foreground-rgb: #F1F1F1;
   --background-start-rgb: #131D47;
@@ -45,13 +45,12 @@ body {
 /* Aplica los colores a otros elementos de la página */
 header {
   background-color: var(--color-dark-blue);
-  color: var(--color-text);
+  color: var(--color-white);
 }
 
 a {
   text-decoration: none;
-  color: var(--color-text);
-  color: inherit;
+  color: var(--color-white);
   text-align: center;
   font-weight: bold;
   padding: 12px 24px;
@@ -66,23 +65,25 @@ a:hover {
 button {
   background-color: var(--color-dark-blue);
   color: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-gray);
   border-radius: 4px;
   padding: 8px;
 }
 
 button:hover {
   background-color: var(--color-black);
-  color: var(--color-text);
+  color: var(--color-light-blue);
 }
 
 footer {
   background-color: var(--color-dark-blue);
-  color: var(--color-text);
+  color: var(--color-white);
 }
 
 nav {
   border-bottom: 1px solid var(--color-white);
+  background-color: var(--color-dark-blue);
+  color: var(--color-white);
   border-radius: 0;
   position: static;
 }

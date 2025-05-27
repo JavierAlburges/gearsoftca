@@ -78,7 +78,7 @@ export function NavBar() {
             </button>
           )}
           {isLoggedIn && isVerified && (
-            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
+            <button onClick={() => router.push("/administracion")} className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium flex items-center">
               <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
             </button>
           )}
@@ -116,7 +116,7 @@ export function NavBar() {
             </button>
           )}
           {isLoggedIn && isVerified && (
-            <button onClick={() => router.push("/ServicioExpressControlPanel")} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium items-center">
+            <button onClick={() => router.push("/administracion")} className="hidden md:flex bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] hover:bg-[var(--color-light-blue)]/90 py-2 px-4 rounded text-sm font-medium items-center">
               <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
               Panel de Administración
             </button>

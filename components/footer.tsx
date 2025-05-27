@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa"
 
 export function Footer() {
   return (
@@ -41,6 +42,17 @@ export function Footer() {
               <p className="text-[var(--color-light-blue)]/80 text-center md:text-left">
                 Impulsando tu negocio con software innovador, en todas las plataformas.
               </p>
+              <div className="flex justify-center gap-4 mt-4">
+                <a href="https://www.instagram.com/gearsoftca/" target="_blank" rel="noopener noreferrer" className="text-[var(--color-light-blue)] hover:text-pink-500 text-2xl">
+                  <FaInstagram />
+                </a>
+                <a href="https://www.linkedin.com/company/gearsoftca" target="_blank" rel="noopener noreferrer" className="text-[var(--color-light-blue)] hover:text-blue-400 text-2xl">
+                  <FaLinkedin />
+                </a>
+                <a href="https://www.youtube.com/@GearSoftCA" target="_blank" rel="noopener noreferrer" className="text-[var(--color-light-blue)] hover:text-red-600 text-2xl">
+                  <FaYoutube />
+                </a>
+              </div>
             </div>
             <div>
               <h3 className="font-semibold mb-4 text-center md:text-left">Soluciones</h3>
@@ -69,8 +81,8 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="text-center py-4 bg-[var(--color-dark-blue)] text-[var(--color-light-blue)]/60 hover:text-[var(--color-light-blue)] transition-colors text-sm">
-        Todos los derechos reservados ©2024 GearSoft.CA
+      <div className="text-center py-4 bg-[var(--color-dark-blue)] text-[var(--color-light-blue)]/60 hover:text-[var(--color-light-blue)] transition-colors text-sm flex flex-col items-center gap-2">
+        <span>Todos los derechos reservados ©2024 GearSoft.CA</span>
       </div>
     </footer>
   )
