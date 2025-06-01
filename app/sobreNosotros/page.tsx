@@ -12,19 +12,19 @@ export default function SobreNosotros() {
             Sobre Nosotros
           </h1>
           <p className="text-lg text-[var(--color-black)] mb-8 text-justify">
-            En GearSoftCA, nos comprometemos a superar las expectativas de nuestros clientes, ofreciendo soluciones innovadoras, de alta calidad y adaptadas a sus necesidades específicas. Nos apasiona la tecnología y nos mantenemos a la vanguardia de las últimas tendencias para ofrecer soluciones que impulsen la transformación digital de nuestros clientes. Nos esforzamos por construir relaciones de confianza y a largo plazo, basadas en la comunicación, la transparencia y el compromiso con el éxito mutuo.
+            En GearSoftCA, nos apasiona la tecnología y nos mantenemos a la vanguardia de las últimas tendencias para ofrecer soluciones que impulsen la transformación digital de nuestros clientes. Nos comprometemos a superar sus expectativas, ofreciendo soluciones innovadoras, de alta calidad y adaptadas a sus necesidades específicas. Nos esforzamos por construir relaciones de confianza y a largo plazo, basadas en la comunicación, la transparencia y el compromiso con el éxito mutuo.
           </p>
           <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
             Visión
           </h2>
           <p className="text-lg text-[var(--color-black)] mb-8 text-justify">
-            Ser una empresa líder en soluciones de software innovadoras en Venezuela y Latinoamérica, reconocida por nuestra especialización en aplicaciones móviles y nuestra capacidad para ofrecer soluciones integrales de alta calidad.
+            Ser la empresa líder en Venezuela y Latinoamérica, reconocida por nuestra innovación constante y la calidad de nuestro trabajo en todas las plataformas para nuestros clientes.
           </p>
           <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
             Misión
           </h2>
           <p className="text-lg text-[var(--color-black)] mb-8 text-justify">
-            Desarrollar soluciones de software personalizadas y de alta calidad, con un enfoque estratégico en aplicaciones móviles, utilizando las mejores prácticas y tecnologías de punta para satisfacer las necesidades de nuestros clientes y potenciar su crecimiento.
+            Desarrollar soluciones de software innovadoras, personalizadas y de alta calidad en todas las plataformas, superando las expectativas de nuestros clientes e impulsando su crecimiento.
           </p>
         </div>
       </main>
