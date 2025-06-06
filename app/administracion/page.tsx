@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { auth, db } from "@/firebaseConfig";
 import { verifyUserInCollection } from "@/lib/firebaseUtils";
-import { setDoc, doc, collection, getDocs, query, limit, serverTimestamp, where } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs, query, limit, where } from "firebase/firestore";
 import Link from "next/link";
 import { Empleado, Usuario, Servicio } from "@/constantes/interfaces";
 import { NavBar } from "@/components/nav-bar";
@@ -137,8 +137,7 @@ export default function ServicioExpressControlPanel() {
     try {
       await setDoc(doc(db, "empleados", formData.ci), {
         ...formData,
-        foto: "", // Campo vacío para la foto
-        timestamp: serverTimestamp()
+        foto: ""
       });
       alert("Empleado registrado exitosamente");
       setFormData({
