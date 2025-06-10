@@ -1,6 +1,7 @@
 import { NavBar } from "@/components/nav-bar"
 import { Footer } from "@/components/footer"
 import React from "react"
+import PDFDemoSection from "@/components/PDFDemoSection";
 
 export default function SobreNosotros() {
   return (
@@ -26,6 +27,7 @@ export default function SobreNosotros() {
           <p className="text-lg text-[var(--color-black)] mb-8 text-justify">
             Desarrollar soluciones de software innovadoras, personalizadas y de alta calidad en todas las plataformas, superando las expectativas de nuestros clientes e impulsando su crecimiento.
           </p>
+          <PDFDemoSection />
         </div>
       </main>
       <Footer />
