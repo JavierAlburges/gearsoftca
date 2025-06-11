@@ -40,7 +40,7 @@ export interface Usuario {
 
 export interface Servicio {
   descripcion: string; // Descripción del servicio solicitado
-  estado: 'En proceso' | 'Completado' | 'Cancelado' | 'Pendiente'; // Estado del servicio
+  estado: 'Pendiente' | 'En proceso' | 'En Revisión' | 'Completado' | 'Cancelado'; // Estados del servicio
   fechaCreacion: Date; // Fecha en que se creó la solicitud del servicio
   personaAsignadaUid: string; // UID de la persona asignada
   personaAsignadaNombre: string; // Nombre de la persona asignada
