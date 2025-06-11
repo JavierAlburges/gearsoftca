@@ -4,25 +4,21 @@ import Link from "next/link"
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
-import { authenticateWithGoogle, verifyUserInCollection } from "@/lib/firebaseUtils"
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { authenticateWithGoogle, getUserDataIfAdmin } from "@/lib/firebaseUtils"; // Cambiado verifyUserInCollection a getUserDataIfAdmin
+import { signOut, onAuthStateChanged, User } from "firebase/auth"; // Importar User
 import { auth } from "@/firebaseConfig";
 
 export function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => { 
       if (user) {
         setIsLoggedIn(true);
-        const userVerified = await verifyUserInCollection(user);
-        setIsVerified(userVerified);
-        if (!userVerified) {
-          alert("Usuario no autorizado.");
-          await handleLogout();
-        }
+        const adminUserData = await getUserDataIfAdmin(user.uid); 
+        setIsVerified(!!adminUserData); 
       } else {
         setIsLoggedIn(false);
         setIsVerified(false);
@@ -30,22 +26,20 @@ export function NavBar() {
     });
 
     return () => unsubscribe();
-  },);
+  }, []); // Removido router de las dependencias si no se usa directamente en este efecto para evitar re-ejecuciones innecesarias.
 
   const handleLogin = async () => {
     try {
-      const user = await authenticateWithGoogle();
-      const userVerified = await verifyUserInCollection(user);
-      if (userVerified) {
-        setIsLoggedIn(true);
-        setIsVerified(true);
-      } else {
-        alert("Usuario no autorizado.");
-        await handleLogout();
-      }
+      // Inicia el proceso de autenticación.
+      // onAuthStateChanged se encargará de actualizar los estados isLoggedIn e isVerified
+      // una vez que el estado de autenticación cambie.
+      await authenticateWithGoogle();
+      // No es necesario establecer isLoggedIn, setIsVerified, o mostrar alertas aquí,
+      // ya que onAuthStateChanged manejará la lógica de post-autenticación.
     } catch (error) {
-      alert("Error durante la autenticación.");
-      console.error(error);
+      // Esto capturará errores si authenticateWithGoogle() falla (ej. popup cerrado).
+      alert("Error durante el proceso de inicio de sesión o fue cancelado.");
+      console.error("Error en handleLogin durante la autenticación:", error);
     }
   };
 
