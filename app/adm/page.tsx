@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { useState, useEffect } from 'react';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
@@ -157,3 +157,4 @@ export default function AdminSetupPage() {
     </>
   );
 }
+  */
