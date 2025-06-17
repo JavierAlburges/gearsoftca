@@ -1,69 +1,75 @@
-import Link from "next/link"
+import Link from "next/link";
 
-const plans = [
+// Definición de tipos para los planes y características
+interface Feature {
+  id: string; // o number, si es más apropiado
+  text: string;
+}
+
+interface Plan {
+  name: string;
+  price: string;
+  features: Feature[];
+}
+
+// Datos de los planes (definidos localmente)
+const plans: Plan[] = [
   {
-    name: "Paquete Básico (Web)",
-    price: "$300",
-    features: ["Diseño de página web de hasta 5 páginas.", "Diseño responsivo (adaptable a móviles y tablets).", "Integración básica de redes sociales.", "Formulário de contacto", "Optimización básica para motores de búsqueda (SEO)."],
+    name: "Básico",
+    price: "$50",
+    features: [
+      { id: "1", text: "Característica 1 del plan básico" },
+      { id: "2", text: "Característica 2 del plan básico" },
+      { id: "3", text: "Característica 3 del plan básico" },
+    ],
   },
   {
-    name: "Paquete Intermedio (Web)",
-    price: "$800",
-    features: ["Todo lo del Paquete Básico.", "Hasta 10 páginas.", "Integración con Google Analytics.", "Optimización avanzada para motores de búsqueda (SEO).", "Soporte técnico durante 3 meses"],
+    name: "Pro",
+    price: "$100",
+    features: [
+      { id: "1", text: "Característica 1 del plan pro" },
+      { id: "2", text: "Característica 2 del plan pro" },
+      { id: "3", text: "Característica 3 del plan pro" },
+      { id: "4", text: "Característica 4 del plan pro" },
+    ],
   },
   {
-    name: "Paquete Avanzado (Web)",
-    price: "$6.000 en adelante",
-    features: ["Todo lo del Paquete Intermedio.", "Páginas ilimitadas.", "Tienda en línea (e-commerce) con hasta 50 productos.", "Soporte técnico 24/7. (durante 6 meses)", "Integración con sistemas de pago.", "Funcionalidades personalizadas (formularios avanzados, bases de datos, etc.)."],
+    name: "Empresarial",
+    price: "$200",
+    features: [
+      { id: "1", text: "Característica 1 del plan empresarial" },
+      { id: "2", text: "Característica 2 del plan empresarial" },
+      { id: "3", text: "Característica 3 del plan empresarial" },
+      { id: "4", text: "Característica 4 del plan empresarial" },
+      { id: "5", text: "Característica 5 del plan empresarial" },
+    ],
   },
-  {
-    name: "Paquete Premium (Web)",
-    price: "Personalizado",
-    features: ["Todo lo del Paquete Avanzado", "Desarrollo de aplicaciones web personalizadas.", "Integraciones avanzadas (CRM, ERP, entre otros).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
-  },
-  {
-    name: "Paquete Básico (Móvil)",
-    price: "$2.500",
-    features: ["Desarrollo de una aplicación con hasta 5 pantallas.", "Diseño responsivo.", "Funcionalidades básicas (formularios, navegación simple).", "Publicación en Google Play y App Store.", "Soporte técnico durante 1 mes."],
-  },
-  {
-    name: "Paquete Intermedio (Móvil)",
-    price: "$6.000",
-    features: ["Todo lo del Paquete Básico.", "Hasta 10 pantallas.", "Integración con APIs externas.", "Notificaciones push", "Optimización para rendimiento", "Soporte técnico durante 3 meses."],
-  },
-  {
-    name: "Paquete Avanzado (Móvil)",
-    price: "$12.000 en adelante",
-    features: ["Todo lo del Paquete Intermedio" ,"Pantallas ilimitadas.", "Funcionalidades avanzadas (geolocalización, pagos en línea).", "Integración con bases de datos.", "Pruebas y control de calidad exhaustivos.", "Soporte técnico durante 6 meses."],
-  },
-  {
-    name: "Paquete Premium (Móvil)",
-    price: "$25,000 USD en adelante",
-    features: ["Todo lo del Paquete Avanzado." ,"Desarrollo de funcionalidades personalizadas.", "Integraciones avanzadas (CRM, ERP, entre otros).", "Mantenimiento y soporte técnico durante 1 año.", "Consultoría y análisis de rendimiento."],
-  },
-]
+];
 
 export function Precios() {
   return (
-    <section className="px-8 py-8 bg-[var(--color-light-blue)]/10">
+    <section className="px-8 py-8 bg-[var(--theme-background)]"> {/* Fondo principal oscuro */}
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[var(--color-white)]">Elige tu plan para la Web o Aplicaciones Moviles</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-[var(--theme-text)]">Elige tu plan para la Web o Aplicaciones Moviles</h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {plans.map((plan) => (
-            <div key={plan.name} className="flex flex-col justify-between bg-[var(--color-white)] p-8 rounded-lg shadow-lg border border-[var(--color-light-blue)]/20">
+          {plans.map((plan: Plan) => (
+            <div key={plan.name} className="flex flex-col justify-between bg-[var(--brand-white)] p-8 rounded-[var(--radius-lg)] shadow-lg border border-[var(--theme-border)]">
               <div>
-                <h3 className="text-xl font-semibold mb-4 text-[var(--color-dark-blue)]">{plan.name}</h3>
-                <p className="text-3xl font-bold mb-6 text-[var(--color-dark-blue)]">{plan.price}</p>
+                <h3 className="text-xl font-semibold mb-4 text-[var(--brand-dark-blue)]">{plan.name}</h3>
+                <p className="text-3xl font-bold mb-6 text-[var(--brand-dark-blue)]">{plan.price}</p> {/* Precio con color azul oscuro, o puedes mantener el acento si prefieres: text-[var(--theme-accent)] */}
                 <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2">
-                      <span className="text-[var(--color-dark-blue)]">{feature}</span>
+                  {plan.features.map((feature: Feature) => (
+                    <li key={feature.id} className="flex items-start text-[var(--brand-dark-blue)] opacity-90">
+                      <svg className="flex-shrink-0 h-6 w-6 text-[var(--brand-dark-blue)] mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      {feature.text}
                     </li>
                   ))}
                 </ul>
               </div>
               <Link href="https://wa.me/584127521730" target="_blank" rel="noopener noreferrer">
-                <button className="w-full bg-[var(--color-black)] hover:bg-[var(--color-black)]/90 text-[var(--color-white)] py-2 px-4 rounded mt-4">
+                <button className="button button-primary w-full mt-4"> {/* Botón primario para 'Contactanos' en este contexto de tarjeta blanca */}
                   Contactanos
                 </button>
               </Link>

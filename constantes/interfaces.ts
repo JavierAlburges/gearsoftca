@@ -2,87 +2,116 @@ import { Timestamp, GeoPoint } from 'firebase/firestore'; // Asegúrate que Time
 
 // Modelo de datos para un servicio
 export interface Servicio {
-  referencia: string; // Identificador único para la solicitud del servicio
-  userId: string; // UID del usuario que solicitó el servicio
-  userName: string; // Nombre del usuario que solicitó el servicio
-  telefonoCliente: string; // Número de teléfono del cliente
-  servicioSolicitado: string; // Tipo de servicio principal, ej: "Plomería"
-  descripcion: string; // Nombre del subservicio seleccionado o descripción inicial
-  comentarios?: string; // Comentarios adicionales sobre el servicio (opcional)
-  fechaCreacion: Date | Timestamp; // Fecha en que se creó la solicitud del servicio
-  ubicacionGoogleMaps: GeoPoint; // Ubicación del servicio en Google Maps
+  // --- Información General del Servicio ---
+  referencia: string; // ID único de la solicitud (puede ser el ID del documento de Firestore)
+  servicioSolicitado: string; // Tipo de servicio principal (ej: "Plomería")
+  descripcion: string; // Subservicio o descripción inicial del problema dada por el cliente
+  comentario?: string; // Comentario adicional del cliente al solicitar (opcional)
+  fechaCreacion: Date | Timestamp; // Fecha de creación de la solicitud
+  ubicacionGoogleMaps: GeoPoint; // Ubicación donde se requiere el servicio
+  estadoServicio:
+    | 'pendientePago'       // Cliente: solicita servicio, pendiente de pagar inspección
+    | 'pendienteAsignacion' // Admin: habilita tras pago, empleados pueden aceptar
+    | 'asignado'            // Empleado: acepta, debe inspeccionar y cotizar
+    | 'pendienteAprobacion' // Cliente: debe aprobar/rechazar cotización
+    | 'aprobado'            // Cliente: aprueba cotización, empleado debe iniciar trabajo
+    | 'enCurso'             // Empleado: trabajo en ejecución
+    | 'revision'            // Cliente: califica y comenta, esperando revisión/cierre del admin
+    | 'completado'          // Admin: confirma y cierra el servicio
+    | 'canceladoCliente'    // Cliente: cancela la solicitud
+    | 'canceladoEmpleado'   // Empleado: cancela la solicitud
+    | 'disputa';            // Cualquier usuario: problema/disputa
+  fechaAsignacion?: Date | Timestamp;    // Fecha de asignación al empleado
+  fechaFinalizacion?: Date | Timestamp;  // Fecha de cierre o cancelación del servicio
 
-  // --- Campos para el nuevo flujo de Inspección y Cotización ---
-  costoInspeccion: number; // Costo fijo de la inspección (ej: 15 USD)
-  pagoInspeccionRealizado: boolean; // Indica si el cliente ya pagó la inspección
-  idPagoInspeccion?: string; // Opcional: ID de la transacción del pago de inspección
+  // --- Información del Cliente relacionada con este Servicio ---
+  uidCliente: string;         // UID del cliente que solicita el servicio
+  nombreCliente: string;      // Nombre del cliente (copiado al momento de crear el servicio)
+  telefonoCliente: string;    // Teléfono del cliente (copiado)
+  ciCliente: string;         // CI del cliente (copiado)
 
-  estadoServicio: // Nuevo campo de estado más detallado
-    | 'PendientePagoInspeccion' // Cliente solicitó, pendiente de pagar la inspección
-    | 'PendienteAsignacionInspeccion' // Cliente pagó, esperando que un empleado acepte la inspección
-    | 'InspeccionAsignada' // Empleado aceptó, pendiente de realizar inspección física y cotizar
-    | 'PendienteCotizacionCliente' // Empleado realizó inspección y envió cotización, cliente debe aprobar/rechazar
-    | 'CotizacionAprobada' // Cliente aprobó la cotización, se define costoFinalAcordado
-    | 'EnProceso' // Trabajo en curso después de cotización aprobada
-    | 'EnRevisionCliente' // Empleado marcó como completado, cliente debe revisar y confirmar
-    | 'Completado' // Cliente confirmó la finalización
-    | 'CanceladoPorCliente' // Cliente canceló
-    | 'CanceladoPorEmpleado' // Empleado canceló
-    | 'Disputa'; // En caso de problemas
+  // --- Información del Empleado relacionada con este Servicio ---
+  uidEmpleado?: string;        // UID del empleado asignado
+  nombreEmpleado?: string;     // Nombre del empleado asignado (copiado al momento de asignar)
+  telefonoEmpleado?: string;   // Teléfono del empleado asignado (copiado)
+  ciEmpleado?: string;         // CI del empleado asignado (copiado)
 
-  personaAsignadaUid?: string; // UID de la persona asignada (puede ser undefined hasta la asignación)
-  personaAsignadaNombre?: string; // Nombre de la persona asignada (puede ser undefined)
-  fechaAsignacionInspeccion?: Date | Timestamp; // Fecha en que se asignó la inspección al empleado
+  // --- Detalles de la Inspección (si aplica) ---
+  costoInspeccion: number;        // Costo fijo de la inspección (definido por el admin o tipo de servicio)
+  pagoInspeccionRealizado: boolean; // Si el cliente ya pagó la inspección
+  idPagoInspeccion?: string;     // ID de la transacción de pago de inspección (opcional)
+  idPagoServicioTotal?: string; // ID de la transacción de pago del servicio total (opcional)
 
-  // Campos para la cotización formal post-inspección
-  detallesCotizacion?: string; // Descripción detallada del trabajo a realizar por el empleado
-  costoMaterialesEstimado?: number; // Estimación de materiales por el empleado
-  costoManoObraCotizado?: number; // Costo de mano de obra cotizado por el empleado
-  costoTotalCotizado?: number; // (ManoDeObra + Materiales) - Esto es lo que el cliente ve.
-  fechaEnvioCotizacion?: Date | Timestamp;
-  fechaAprobacionCotizacion?: Date | Timestamp;
-  // El costo de inspección se descuenta del costoTotalCotizado si se realiza el trabajo.
+  // --- Detalles de la Cotización (generada por el empleado) ---
+  infoCotizacion?: InfoCotizacion; // Nueva interfaz para agrupar detalles de cotización
 
-  costoFinalAcordado?: number; // El costo total que el cliente pagará por el servicio (sin incluir la inspección si ya se pagó por separado, o incluyéndola si se maneja así)
-                                // Este sería el costoTotalCotizado.
-
-  // --- Fin de campos para el nuevo flujo ---
-
-  // Campos existentes que se mantienen o ajustan
-  // estado: 'Pendiente' | 'En proceso' | 'En Revisión' | 'Completado' | 'Cancelado'; // Reemplazado por estadoServicio
-  // costo: number; // Reemplazado por costoInspeccion y costoFinalAcordado
-  fechaAsignacion?: Date | Timestamp; // Puede renombrarse o usarse para fechaAsignacionInspeccion si aplica
-  fechaFinalizacion?: Date | Timestamp; // Fecha en que se completó el servicio
+  // --- Satisfacción del Cliente (post-servicio) ---
+  satisfaccionCliente?: number;     // Valor de 1 a 5
+  comentarioSatisfaccion?: string;  // Comentario del cliente tras finalizar
 }
 
-// Modelo de datos para un usuario unificado (antes Usuario y Empleado)
+// Interfaz para los detalles de la cotización
+export interface InfoCotizacion {
+  descripcionTrabajoRealizar?: string;
+  materiales?: Material[];
+  costoTotalMateriales?: number;
+
+  // Campos para mano de obra por horas
+  horasEstimadas?: number;        // Horas estimadas para el trabajo
+  precioPorHora?: number;         // Precio que cobra el empleado o la empresa por hora
+  costoManoObra?: number;         // Calculado (horasEstimadas * precioPorHora), pero se almacena
+
+  costoTotal?: number; 
+  fechaEnvio?: Date | Timestamp;
+  fechaAprobacion?: Date | Timestamp;
+}
+
+// Modelo de datos para un usuario (cliente, empleado o admin)
 export interface Usuario {
-  uid: string; // UID del usuario/empleado
+  uid: string; // UID único
   email: string; // Correo electrónico
-  userName: string; // Nombre del usuario/empleado
+  nombreUsuario: string; // Nombre completo
   ci: string; // Cédula de identidad
-  telefono: string; // Número de teléfono
+  telefono: string; // Teléfono
   fechaRegistro: Date | Timestamp; // Fecha de registro
-  foto?: string; // URL de la foto
+  foto?: string; // URL de foto de perfil (opcional)
   pushToken?: string; // Token de notificaciones push (opcional)
-  tipoUsuario: 'cliente' | 'empleado' | 'administrador'; // Tipo de usuario
+  tipoUsuario: 'cliente' | 'empleado' | 'administrador'; // Rol del usuario
 
-  // Campos específicos para clientes
-  saldo?: number; // Saldo a favor del cliente (revisar si aplica a empleado también)
-  deuda?: number; // Deuda del cliente (revisar si aplica a empleado también)
-  numeroServiciosSolicitados?: number; // Número de servicios solicitados por el cliente
-  serviciosSolicitados?: string[]; // Lista de IDs de servicios solicitados por el cliente (opcional)
-  ubicacionGoogleMaps?: GeoPoint; // Ubicación del cliente en Google Maps (opcional)
-  comentariosCliente?: string[]; // Comentarios sobre el cliente (opcional, renombrado para claridad)
+  // Solo clientes
+  saldo?: number; // Saldo a favor
+  deuda?: number; // Deuda pendiente
+  numeroServiciosSolicitados?: number; // Servicios solicitados
+  serviciosSolicitados?: string[]; // IDs de servicios solicitados
+  ubicacionGoogleMaps?: GeoPoint; // Ubicación del cliente (opcional)
+  comentariosCliente?: string[]; // Comentarios sobre el cliente (opcional)
 
-  // Campos específicos para empleados
-  linkedin?: string; // Perfil de LinkedIn del empleado (opcional)
-  serviciosHabilitados?: string[]; // Lista de servicios que el empleado puede realizar (opcional)
-  numeroServiciosRealizados?: number; // Número de servicios realizados por el empleado (opcional)
-  saldoEmpleado?: number; // Saldo acumulado por servicios completados para el empleado (opcional, renombrado)
-  deudaEmpleado?: number; // Deuda acumulada del empleado (opcional, renombrado)
-  diferenciaSaldoDeudaEmpleado?: number; // Diferencia entre saldo y deuda del empleado (opcional, renombrado)
-  disponibilidad?: 'disponible' | 'ocupado' | 'desconectado'; // Disponibilidad del empleado (opcional)
-  calificacionPromedio?: number; // Calificación promedio del empleado (opcional)
-  comentariosSobreEmpleado?: string[]; // Comentarios de los usuarios sobre el empleado (opcional, renombrado)
+  // Solo empleados
+  linkedin?: string; // Perfil de LinkedIn (opcional)
+  serviciosHabilitados?: string[]; // Servicios que puede realizar
+  numeroServiciosRealizados?: number; // Servicios realizados
+  saldoEmpleado?: number; // Saldo acumulado por servicios
+  deudaEmpleado?: number; // Deuda acumulada
+  diferenciaSaldoDeudaEmpleado?: number; // Saldo - deuda
+  estado?: 'activo' | 'baneado' | 'inhabilitado'; // Estado del empleado
+  calificacionPromedio?: number; // Calificación promedio
+  comentariosSobreEmpleado?: string[]; // Comentarios de clientes (opcional)
+}
+
+export interface Material {
+  id?: string; // Puede ser un UUID o similar generado en el frontend
+  nombre: string;
+  unidad: string; // Ej: 'unidad', 'mts', 'kg', 'lt'
+  cantidad: number;
+  precioUnitario: number;
+}
+
+export interface DatosBancarios {
+  banco: string;
+  tipoCuenta?: string;
+  numeroCuenta?: string;
+  titular: string;
+  rif: string;
+  telefono?: string; // Opcional, usado para Pago Móvil
+  pagoMovil?: boolean;
 }

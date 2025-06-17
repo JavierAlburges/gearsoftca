@@ -3,87 +3,279 @@
 @tailwind utilities;
 
 :root {
-  --color-dark-blue: #131D47; /* Principal */
-  --color-light-blue: #9AECED; /* Secundario */
-  --color-gray: #4C4C4C;      /* Complemento */
-  --color-white: #F1F1F1;     /* Blanco */
-  --color-black: #000000;     /* Negro */
-  --color-error: #f44336;
-  --color-background: var(--color-dark-blue);
-  --color-text: var(--color-white);
-  --color-tint: var(--color-light-blue);
-  --color-icon: var(--color-white);
-  --color-tab-icon-default: var(--color-white);
-  --color-tab-icon-selected: var(--color-light-blue);
-  --color-border: var(--color-gray);
+  /* Colores Principales de la Marca (desde constants/colors.ts) */
+  --brand-dark-blue: #131D47;
+  --brand-light-blue: #9AECED; /* tinte / acento */
+  --brand-gray: #4C4C4C;
+  --brand-white: #F1F1F1;
+  --brand-white-rgb: 241, 241, 241; /* Añadido para usar en rgba() */
+  --brand-black: #000000;
+  --brand-red-error: #FF5449; /* error */
+  --brand-yellow-warning: #FFD600;
+  --brand-green-success: #00B686;
+  --brand-surface-light: #E6EAF4; /* superficie en tema claro */
 
-  --foreground-rgb: #F1F1F1;
-  --background-start-rgb: #131D47;
-  --background-end-rgb: #131D47;
-  --color-gradient-start: #1e3a8a; /* Azul oscuro */
-  --color-gradient-end: #000000; /* Negro */
+  /* Tamaños de Fuente (desde constants/fonts.ts) */
+  --font-size-title: 32px;
+  --font-size-subtitle: 22px;
+  --font-size-text: 16px;
+  --font-size-h2: 24px;
+  --font-size-h3: 20px;
+  --font-size-small: 14px;
+
+  /* Constantes de Material 3 (desde constants/material3.ts) */
+  /* Espaciados */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 40px;
+  /* Radios */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+  /* Botones */
+  --button-height: 48px;
+  --button-padding-horizontal: 24px;
+  --button-border-radius: var(--radius-lg); /* Usando RADIUS.lg de Material 3 */
+  /* Tarjetas */
+  --card-padding: var(--spacing-lg);
+  --card-border-radius: var(--radius-lg);
+
+  /* --- Tema por Defecto: Fondo Azul Oscuro, Texto Blanco --- */
+  --theme-background: var(--brand-dark-blue);
+  --theme-text: var(--brand-white);
+  --theme-primary-background: var(--brand-dark-blue); /* Para encabezados, pies de página */
+  --theme-text-on-primary: var(--brand-white);
+  --theme-accent: var(--brand-light-blue);
+  --theme-border: var(--brand-gray);
+  --theme-icon: var(--brand-white);
+  --theme-surface: var(--brand-gray); /* Tarjetas, elementos elevados sobre fondo oscuro */
+  --theme-surface-text: var(--brand-white); /* Texto sobre --theme-surface */
+  
+  --theme-button-primary-bg: var(--brand-light-blue); /* Botón primario con acento */
+  --theme-button-primary-text: var(--brand-dark-blue);
+  --theme-button-secondary-bg: var(--brand-gray);
+  --theme-button-secondary-text: var(--brand-white);
+
+  --theme-link-color: var(--brand-light-blue);
+  --theme-link-hover-color: var(--brand-white);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
+  /* --- Tema Claro Opcional (si se habilita manualmente o por preferencia del sistema) --- */
+  /* El usuario especificó azul oscuro como base, así que este bloque es más bien un ejemplo */
+  /* Si se quisiera un tema claro por defecto, estos serían los valores principales */
+  /*
   :root {
-    --foreground-rgb: #F1F1F1;
-    --background-start-rgb: #000000;
-    --background-end-rgb: #131D47;
+    --theme-background: var(--brand-white);
+    --theme-text: var(--brand-dark-blue);
+    --theme-primary-background: var(--brand-dark-blue); 
+    --theme-text-on-primary: var(--brand-white);
+    --theme-accent: var(--brand-light-blue);
+    --theme-border: var(--brand-gray);
+    --theme-icon: var(--brand-dark-blue);
+    --theme-surface: var(--brand-surface-light); 
+    --theme-surface-text: var(--brand-dark-blue);
+
+    --theme-button-primary-bg: var(--brand-dark-blue);
+    --theme-button-primary-text: var(--brand-white);
+    --theme-button-secondary-bg: var(--brand-gray);
+    --theme-button-secondary-text: var(--brand-white);
+
+    --theme-link-color: var(--brand-dark-blue);
+    --theme-link-hover-color: var(--brand-light-blue);
   }
+  */
+}
+
+html {
+  font-size: 100%; /* Base para rems si se usan, aunque los valores son px */
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground-rgb);
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--background-end-rgb)
-    )
-    var(--background-start-rgb);
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: var(--font-size-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Aplica los colores a otros elementos de la página */
-header {
-  background-color: var(--color-dark-blue);
-  color: var(--color-white);
+main {
+  flex: 1;
 }
 
+/* Estilos para Encabezados */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--theme-text); /* O --theme-text-on-primary si están sobre fondo primario */
+  margin-bottom: var(--spacing-md);
+  line-height: 1.3;
+}
+h1 { font-size: var(--font-size-title); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+/* Definir h4, h5, h6 si es necesario, usando --font-size-text o --font-size-small */
+
+/* Estilos para Enlaces */
 a {
+  color: var(--theme-link-color);
   text-decoration: none;
-  color: var(--color-white);
-  text-align: center;
+  transition: color 0.2s ease-in-out;
+}
+a:hover, a:focus {
+  color: var(--theme-link-hover-color);
+  text-decoration: underline;
+}
+
+/* Estilos para Botones */
+button, .button { /* .button para aplicar estilos de botón a etiquetas <a> u otros elementos */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height);
+  padding: var(--spacing-sm) var(--button-padding-horizontal);
+  font-size: var(--font-size-text);
   font-weight: bold;
-  padding: 12px 24px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: var(--button-border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  text-align: center;
 }
 
-a:hover {
-  color: var(--color-light-blue);
+.button-primary, button[type="submit"] { /* Asumimos que submit es primario */
+  background-color: var(--theme-button-primary-bg);
+  color: var(--theme-button-primary-text);
+  border-color: var(--theme-button-primary-bg);
+}
+.button-primary:hover, button[type="submit"]:hover {
+  background-color: color-mix(in srgb, var(--theme-button-primary-bg) 90%, var(--brand-black));
+  border-color: color-mix(in srgb, var(--theme-button-primary-bg) 90%, var(--brand-black));
 }
 
-button {
-  background-color: var(--color-dark-blue);
-  color: var(--color-white);
-  border: 1px solid var(--color-gray);
-  border-radius: 4px;
-  padding: 8px;
+.button-secondary {
+  background-color: var(--theme-button-secondary-bg);
+  color: var(--theme-button-secondary-text);
+  border-color: var(--theme-button-secondary-bg);
+}
+.button-secondary:hover {
+  background-color: color-mix(in srgb, var(--theme-button-secondary-bg) 90%, var(--brand-black));
+  border-color: color-mix(in srgb, var(--theme-button-secondary-bg) 90%, var(--brand-black));
 }
 
-button:hover {
-  background-color: var(--color-black);
-  color: var(--color-light-blue);
-}
-
-footer {
-  background-color: var(--color-dark-blue);
-  color: var(--color-white);
-}
-
+/* Estilos para Barra de Navegación */
 nav {
-  border-bottom: 1px solid var(--color-white);
-  background-color: var(--color-dark-blue);
-  color: var(--color-white);
-  border-radius: 0;
-  position: static;
+  background-color: var(--theme-primary-background);
+  color: var(--theme-text-on-primary);
+  padding: var(--spacing-sm) var(--spacing-md); /* Ajustar padding según diseño */
+  border-bottom: 1px solid var(--theme-border); /* Borde sutil */
 }
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap; /* Para responsividad */
+  justify-content: center; /* O flex-start, space-between según diseño */
+}
+
+nav ul li {
+  margin: 0 var(--spacing-sm);
+}
+
+nav ul li a {
+  display: inline-flex; /* Para alinear contenido verticalmente */
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height); /* Altura uniforme Material 3 */
+  padding: var(--spacing-xs) var(--spacing-md); /* Padding ajustado para nav links */
+  color: var(--theme-text-on-primary);
+  font-size: var(--font-size-text); /* O --font-size-small */
+  font-weight: bold; /* Mantener bold por consistencia */
+  text-decoration: none;
+  border-radius: var(--radius-md); /* Radio más pequeño para nav links */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+nav ul li a:hover,
+nav ul li a:focus,
+nav ul li a.active { /* Clase para el enlace activo */
+  color: var(--theme-accent);
+  background-color: rgba(var(--brand-white-rgb), 0.1); /* Un ligero fondo al pasar el ratón/activo */
+}
+/* Para que rgba funcione con --brand-white, necesitamos su version RGB */
+/* Esto se puede añadir a :root si se usa mucho: --brand-white-rgb: 241, 241, 241; */ 
+/* ^^^ Variable --brand-white-rgb movida a :root */
+
+/* Estilos para Pie de Página */
+footer {
+  background-color: var(--theme-primary-background);
+  color: var(--theme-text-on-primary);
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  font-size: var(--font-size-small);
+}
+footer a {
+  color: var(--theme-accent); /* Enlaces en footer con color de acento */
+}
+footer a:hover, footer a:focus {
+  color: var(--brand-white);
+  text-decoration: underline;
+}
+
+/* Clase genérica para Tarjetas */
+.card {
+  background-color: var(--theme-surface);
+  color: var(--theme-surface-text); /* Asegurar contraste con el fondo de la tarjeta */
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra sutil */
+}
+
+/* Utilidades de Responsividad (Ejemplos) */
+/* Tailwind ya ofrece clases para esto, pero se pueden definir globales si es necesario */
+.container {
+  width: 90%;
+  max-width: 1200px; /* Ajustar según el diseño */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ajustes para pantallas pequeñas (ejemplo) */
+@media (max-width: 768px) {
+  h1 { font-size: calc(var(--font-size-title) * 0.8); }
+  h2 { font-size: calc(var(--font-size-h2) * 0.85); }
+  h3 { font-size: calc(var(--font-size-h3) * 0.9); }
+
+  nav ul {
+    flex-direction: column; /* Apilar elementos de navegación */
+    align-items: center;
+  }
+  nav ul li {
+    margin: var(--spacing-xs) 0;
+  }
+  nav ul li a {
+    width: 100%; /* Hacer que los enlaces de navegación ocupen todo el ancho */
+    justify-content: center;
+  }
+
+  button, .button {
+    padding: var(--spacing-sm) var(--spacing-lg); /* Reducir padding en móviles */
+    font-size: var(--font-size-small); /* Fuente más pequeña en botones */
+  }
+}
+
+/* Clases de Tailwind que podrían ser útiles para aplicar estos estilos: */
+/* body: bg-theme-background text-theme-text */
+/* h1: text-4xl (o similar) text-theme-text */
+/* button: bg-theme-button-primary-bg text-theme-button-primary-text rounded-lg px-6 py-3 */
+/* nav: bg-theme-primary-background */
+/* nav a: text-theme-text-on-primary hover:text-theme-accent */

@@ -1,25 +1,26 @@
-import { NavBar } from "@/components/nav-bar"
-import { Footer } from "@/components/footer"
-import Image from "next/image"
-import React from "react"
+import { NavBar } from "@/components/nav-bar";
+import { Footer } from "@/components/footer";
+import React from "react";
+import Image from "next/image";
 
 export default function Documentacion() {
   return (
     <>
       <NavBar />
-      <main className="bg-[var(--color-white)] p-8">
-        <div className="container mx-auto my-20">
-          <h1 className="text-3xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+      <main className="bg-[var(--theme-background)] text-[var(--theme-text)] p-8">
+        <div className="container mx-auto my-10 md:my-20">
+          <h1 className="text-3xl font-bold text-[var(--theme-text)] mb-8 text-center">
             Documentación
           </h1>
-          <p className="text-lg text-[var(--color-black)] mb-8 text-justify">
-            Este espacio está dedicado al desarrollo y la formación continua de nuestro equipo. Aquí encontrará documentación, tutoriales y recursos para mejorar sus habilidades en programación y diseño. ¡Colaboremos y compartamos conocimientos para construir un equipo aún más fuerte
+          <p className="text-lg text-[var(--theme-text)] opacity-90 mb-12 text-justify">
+            Este espacio está dedicado al desarrollo y la formación continua de nuestro equipo. Aquí encontrará documentación, tutoriales y recursos para mejorar sus habilidades en programación y diseño. ¡Colaboremos y compartamos conocimientos para construir un equipo aún más fuerte!
           </p>
-          <section id="curso-de-programacion-basica" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+
+          <section id="curso-de-programacion-basica" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
                 Recursos del Curso de Programación Básica
             </h2>
-            <ul className="space-y-4">
+            <ul className="space-y-4 text-[var(--brand-dark-blue)] opacity-90">
                 <li>
                 <a
                     href="https://drive.google.com/file/d/1JHzDf3b5qkFaxw9mUEDLE9fgtliRwNfi/view"
@@ -70,11 +71,11 @@ export default function Documentacion() {
                 </li>
             </ul>
           </section>
-          <section id="proyectos-e-informacion-extra" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+          <section id="proyectos-e-informacion-extra" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
               Proyectos e Información Extra
             </h2>
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex flex-col md:flex-row gap-8 text-[var(--brand-dark-blue)] opacity-90">
               <ul className="space-y-4 flex-1">
                 <li>
                   <a
@@ -190,11 +191,11 @@ export default function Documentacion() {
               </div>
             </div>
           </section>
-          <section id="frameworks-utilizados" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+          <section id="frameworks-utilizados" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
               Frameworks Utilizados en la Empresa
             </h2>
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex flex-col md:flex-row gap-8 text-[var(--brand-dark-blue)] opacity-90">
               <ul className="space-y-4 flex-1">
                 <li>
                   <a
@@ -278,11 +279,11 @@ export default function Documentacion() {
               </div>
             </div>
           </section>
-          <section id="guias-rapidas" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+          <section id="guias-rapidas" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
               Guías Rápidas
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[var(--brand-dark-blue)] opacity-90">
               <a
                 href="https://www.creative-tim.com/twcomponents/cheatsheet"
                 target="_blank"
@@ -333,11 +334,11 @@ export default function Documentacion() {
               </a>
             </div>
           </section>
-          <section id="aprende-jugando" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+          <section id="aprende-jugando" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
               Aprende Jugando
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[var(--brand-dark-blue)] opacity-90">
               <div className="rounded-lg shadow-lg overflow-hidden">
                 <iframe
                   src="https://flexboxfroggy.com/#es"
@@ -380,11 +381,11 @@ export default function Documentacion() {
               </div>
             </div>
           </section>
-          <section id="guia-aprendizaje-microsoft" className="mb-12">
-            <h2 className="text-2xl font-bold text-[var(--color-dark-blue)] mb-4 text-center">
+          <section id="guia-aprendizaje-microsoft" className="mb-12 p-6 bg-[var(--brand-white)] rounded-[var(--radius-lg)] shadow-lg">
+            <h2 className="text-2xl font-bold text-[var(--brand-dark-blue)] mb-6 text-center">
               Guía de Aprendizaje de Programación de Microsoft
             </h2>
-            <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex flex-col md:flex-row items-center gap-8 text-[var(--brand-dark-blue)] opacity-90">
               <div className="flex-1 flex justify-center">
                 <Image
                   src="/images/Microsoft.jpg"
@@ -411,5 +412,5 @@ export default function Documentacion() {
       </main>
       <Footer />
     </>
-  )
+  );
 }

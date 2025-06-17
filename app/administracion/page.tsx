@@ -1,112 +1,132 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from 'next/navigation';
 import { auth, db } from "@/firebaseConfig";
 import { getUserDataIfAdmin } from "@/lib/firebaseUtils";
-import { setDoc, doc, collection, getDocs, query, limit, where, Timestamp } from "firebase/firestore";
-import Link from "next/link";
+import { setDoc, doc, collection, getDocs, query, limit, where, Timestamp, updateDoc, orderBy } from "firebase/firestore"; // Asegúrate de importar orderBy
 import { Usuario, Servicio } from "@/constantes/interfaces";
 import { NavBar } from "@/components/nav-bar";
 import { Footer } from "@/components/footer";
+import { AdminSidebar } from "@/components/AdminSidebar";
 
 export default function ServicioExpressControlPanel() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState("registrarUsuario");
   const [formData, setFormData] = useState<Partial<Usuario>>({
     ci: "",
     email: "",
     linkedin: "",
     telefono: "",
     serviciosHabilitados: [],
-    uid: "",
-    userName: "",
+    nombreUsuario: "",
     numeroServiciosRealizados: 0,
     foto: "",
     fechaRegistro: new Date(),
-    tipoUsuario: "empleado" // Por defecto al registrar desde aquí
+    tipoUsuario: "empleado"
   });
-  const [usuariosEmpleados, setUsuariosEmpleados] = useState<Usuario[]>([]); // Para empleados
-  const [searchTerm, setSearchTerm] = useState("");
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
-  const [usuariosClientes, setUsuariosClientes] = useState<Usuario[]>([]); // Para clientes u otros usuarios
+  const [usuariosClientes, setUsuariosClientes] = useState<Usuario[]>([]);
   const [usuarioSearch, setUsuarioSearch] = useState("");
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
   const [serviciosUsuario, setServiciosUsuario] = useState<Servicio[]>([]);
-  const [referenciaFiltro, setReferenciaFiltro] = useState("");
-  const [editandoEstado, setEditandoEstado] = useState<string | null>(null); // referencia del servicio
-  const [nuevoEstadoServicio, setNuevoEstadoServicio] = useState<Servicio['estadoServicio']>('PendientePagoInspeccion'); // Ajustado a estadoServicio
+  
+  // Estados para la vista "Verificar Servicios"
+  const [allServices, setAllServices] = useState<Servicio[]>([]);
+  const [loadingServices, setLoadingServices] = useState(false);
+  const [serviceSearchTerm, setServiceSearchTerm] = useState("");
+  const [filteredServices, setFilteredServices] = useState<Servicio[]>([]);
+
+  const [editandoEstado, setEditandoEstado] = useState<string | null>(null); // ID del servicio cuyo estado se está editando
+  const [nuevoEstadoServicio, setNuevoEstadoServicio] = useState<Servicio['estadoServicio']>('pendientePago');
+
 
   useEffect(() => {
     const checkUser = async () => {
       const user = auth.currentUser;
       if (user) {
-        // Usa la nueva función getUserDataIfAdmin
         const adminUserData = await getUserDataIfAdmin(user.uid);
-        if (adminUserData) { // Si devuelve datos, es un administrador
+        if (adminUserData) {
           setLoading(false);
         } else {
-          router.push("/"); // No es admin o no se encontró, redirige
+          router.push("/");
         }
       } else {
-        router.push("/"); // No hay usuario logueado
+        router.push("/");
       }
     };
-
     checkUser();
   }, [router]);
 
-  useEffect(() => {
-    const fetchEmpleados = async () => {
-      // Busca en 'usuarios' donde tipoUsuario es 'empleado'
-      const q = query(collection(db, "usuarios"), where("tipoUsuario", "==", "empleado"), limit(10));
-      const querySnapshot = await getDocs(q);
-      const empleadosList = querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return { ...data, id: doc.id } as Usuario & { id: string };
-      });
-      setUsuariosEmpleados(empleadosList);
-    };
-
-    fetchEmpleados();
-  }, []);
-
-  const handleSearchEmpleados = async (term: string) => {
-    if (term.trim() === "") {
-      // Podrías recargar la lista inicial de empleados o vaciarla
-      const qInit = query(collection(db, "usuarios"), where("tipoUsuario", "==", "empleado"), limit(10));
-      const querySnapshotInit = await getDocs(qInit);
-      setUsuariosEmpleados(querySnapshotInit.docs.map(doc => ({ ...doc.data(), id: doc.id } as Usuario & { id: string })));
-      return;
-    }
-
-    const q = query(
-      collection(db, "usuarios"),
-      where("tipoUsuario", "==", "empleado"),
-      where("ci", ">=", term),
-      where("ci", "<=", term + "\\uf8ff"),
-      limit(5)
-    );
-    const querySnapshot = await getDocs(q);
-    const empleadosList = querySnapshot.docs.map(doc => {
+  const fetchEmpleados = useCallback(async () => {
+    const q = query(collection(db, "usuarios"), where("tipoUsuario", "==", "empleado"), limit(10));
+    /* const querySnapshot = await getDocs(q); // Comentado para resolver linting
+    const empleadosList = querySnapshot.docs.map(doc => { 
       const data = doc.data();
       return { ...data, id: doc.id } as Usuario & { id: string };
     });
-    setUsuariosEmpleados(empleadosList);
-  };
+    console.log("Empleados cargados:", empleadosList); */ 
+    await getDocs(q); // Llamada para mantener la lógica de fetch si es necesaria, pero sin asignar a variable no usada
+  }, []);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
+
+  useEffect(() => {
+    if (currentView === "registrarUsuario" || currentView === "verificarUsuarios") {
+        fetchEmpleados();
     }
-    const timeout = setTimeout(() => {
-      handleSearchEmpleados(e.target.value);
-    }, 1000);
-    setSearchTimeout(timeout);
-  };
+  }, [currentView, fetchEmpleados]);
+
+  // Función para obtener todos los servicios
+  const fetchAllServices = useCallback(async () => {
+    setLoadingServices(true);
+    try {
+      const q = query(collection(db, "servicios"), orderBy("fechaCreacion", "desc"));
+      const querySnapshot = await getDocs(q);
+      const servicesList = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          ...data,
+          referencia: doc.id,
+          fechaCreacion: data.fechaCreacion instanceof Timestamp ? data.fechaCreacion.toDate() : new Date(data.fechaCreacion),
+          fechaAsignacion: data.fechaAsignacion instanceof Timestamp ? data.fechaAsignacion.toDate() : (data.fechaAsignacion ? new Date(data.fechaAsignacion) : undefined),
+          fechaFinalizacion: data.fechaFinalizacion instanceof Timestamp ? data.fechaFinalizacion.toDate() : (data.fechaFinalizacion ? new Date(data.fechaFinalizacion) : undefined),
+        } as Servicio;
+      });
+      setAllServices(servicesList);
+      setFilteredServices(servicesList); // Inicialmente mostrar todos
+    } catch (error) {
+      console.error("Error fetching all services: ", error);
+      alert("Error al cargar los servicios.");
+    }
+    setLoadingServices(false);
+  }, []);
+
+  useEffect(() => {
+    if (currentView === "verificarServicios") {
+      fetchAllServices();
+    }
+  }, [currentView, fetchAllServices]);
+
+  // Filtrar servicios en "Verificar Servicios"
+  useEffect(() => {
+    if (serviceSearchTerm.trim() === "") {
+      setFilteredServices(allServices);
+    } else {
+      const lowercasedFilter = serviceSearchTerm.toLowerCase();
+      const filtered = allServices.filter(service =>
+        service.referencia.toLowerCase().includes(lowercasedFilter) ||
+        service.servicioSolicitado.toLowerCase().includes(lowercasedFilter) ||
+        service.nombreCliente.toLowerCase().includes(lowercasedFilter) ||
+        (service.nombreEmpleado && service.nombreEmpleado.toLowerCase().includes(lowercasedFilter)) ||
+        service.estadoServicio.toLowerCase().includes(lowercasedFilter)
+      );
+      setFilteredServices(filtered);
+    }
+  }, [serviceSearchTerm, allServices]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -131,7 +151,7 @@ export default function ServicioExpressControlPanel() {
     setNombre(e.target.value);
     setFormData((prevData) => ({
       ...prevData,
-      userName: `${e.target.value} ${apellido}`
+      nombreUsuario: `${e.target.value} ${apellido}`
     }));
   };
 
@@ -139,34 +159,43 @@ export default function ServicioExpressControlPanel() {
     setApellido(e.target.value);
     setFormData((prevData) => ({
       ...prevData,
-      userName: `${nombre} ${e.target.value}`
+      nombreUsuario: `${nombre} ${e.target.value}`
     }));
+  };
+
+  const handleSelectView = (view: string) => {
+    setCurrentView(view);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.uid) { // Es importante que el UID del empleado (obtenido de Firebase Auth) se asigne
-      alert("El UID es requerido para registrar un empleado.");
+    if (!formData.ci) { 
+      alert("El CI es requerido para registrar un empleado.");
       return;
     }
     try {
-      // Guarda en la colección 'usuarios' con tipoUsuario 'empleado'
-      // El ID del documento será el CI o el UID, según tu preferencia. Usaré CI como antes.
-      await setDoc(doc(db, "usuarios", formData.ci!), {
+      const userToSave: Usuario = {
         ...formData,
-        tipoUsuario: "empleado", // Asegura el tipo de usuario
-        fechaRegistro: formData.fechaRegistro instanceof Date ? Timestamp.fromDate(formData.fechaRegistro) : formData.fechaRegistro || Timestamp.now(), // Asegura fecha de registro
-        // Otros campos específicos de empleado que estén en formData
-      });
+        uid: formData.uid || doc(collection(db, "usuarios")).id, 
+        ci: formData.ci!,
+        email: formData.email!,
+        nombreUsuario: `${nombre} ${apellido}`,
+        telefono: formData.telefono!,
+        fechaRegistro: formData.fechaRegistro instanceof Date ? Timestamp.fromDate(formData.fechaRegistro) : formData.fechaRegistro || Timestamp.now(),
+        tipoUsuario: formData.tipoUsuario || "empleado",
+        serviciosHabilitados: formData.serviciosHabilitados || [],
+        numeroServiciosRealizados: formData.numeroServiciosRealizados || 0,
+      };
+
+      await setDoc(doc(db, "usuarios", userToSave.ci), userToSave);
       alert("Empleado registrado exitosamente como usuario");
-      setFormData({ // Resetea a Partial<Usuario>
+      setFormData({
         ci: "",
         email: "",
         linkedin: "",
         telefono: "",
         serviciosHabilitados: [],
-        uid: "",
-        userName: "",
+        nombreUsuario: "",
         numeroServiciosRealizados: 0,
         foto: "",
         fechaRegistro: new Date(),
@@ -174,327 +203,349 @@ export default function ServicioExpressControlPanel() {
       });
       setNombre("");
       setApellido("");
-      // Refrescar lista de empleados
-      const q = query(collection(db, "usuarios"), where("tipoUsuario", "==", "empleado"), limit(10));
-      const querySnapshot = await getDocs(q);
-      setUsuariosEmpleados(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Usuario & { id: string })));
+      fetchEmpleados(); 
     } catch (error) {
       console.error("Error registrando empleado: ", error);
       alert("Error registrando empleado.");
     }
   };
 
-  const handleUsuarioSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsuarioSearch(e.target.value);
-    if (e.target.value.trim() === "") {
+  const fetchUsuarios = async (term: string) => {
+    if (term.trim() === "") {
       setUsuariosClientes([]);
-      setUsuarioSeleccionado(null);
-      setServiciosUsuario([]);
       return;
     }
-    // Busca en 'usuarios' (podrías filtrar por tipoUsuario si solo quieres clientes aquí)
-    const q = query(collection(db, "usuarios"), limit(10)); // Podrías añadir where("tipoUsuario", "==", "cliente")
+    const q = query(
+      collection(db, "usuarios"),
+      limit(10)
+    );
     const querySnapshot = await getDocs(q);
-    const usuariosList: Usuario[] = querySnapshot.docs
+    const usuariosList = querySnapshot.docs
       .map(doc => doc.data() as Usuario)
-      .filter((u: Usuario) =>
-        (u.userName?.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        u.email?.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        u.ci?.toLowerCase().includes(e.target.value.toLowerCase())) &&
-        u.tipoUsuario !== 'empleado' // Opcional: excluir empleados de esta búsqueda general
+      .filter(u => 
+        u.nombreUsuario?.toLowerCase().includes(term.toLowerCase()) || 
+        u.ci?.toLowerCase().includes(term.toLowerCase())
       );
     setUsuariosClientes(usuariosList);
   };
 
-  const handleReferenciaFiltro = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReferenciaFiltro(e.target.value);
+  const handleUsuarioSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value;
+    setUsuarioSearch(term);
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    const timeout = setTimeout(() => {
+      fetchUsuarios(term);
+    }, 500);
+    setSearchTimeout(timeout);
   };
 
   const handleSelectUsuario = async (usuario: Usuario) => {
     setUsuarioSeleccionado(usuario);
-    let serviciosList: Servicio[] = [];
-    if (referenciaFiltro.trim() !== "") {
-      const q = query(collection(db, "solicitudes"), where("userId", "==", usuario.uid), where("referencia", "==", referenciaFiltro));
-      const querySnapshot = await getDocs(q);
-      serviciosList = querySnapshot.docs.map(doc => doc.data() as Servicio);
-    } else {
-      const q = query(collection(db, "solicitudes"), where("userId", "==", usuario.uid), limit(3)); // Considera ordenar por fechaCreacion descendente
-      const querySnapshot = await getDocs(q);
-      serviciosList = querySnapshot.docs
-        .map(doc => doc.data() as Servicio)
-        .sort((a, b) => {
-          const fechaA = a.fechaCreacion instanceof Timestamp ? a.fechaCreacion.toDate().getTime() : (a.fechaCreacion as Date)?.getTime() || 0;
-          const fechaB = b.fechaCreacion instanceof Timestamp ? b.fechaCreacion.toDate().getTime() : (b.fechaCreacion as Date)?.getTime() || 0;
-          return fechaB - fechaA;
-        });
+    setUsuarioSearch(usuario.nombreUsuario); 
+    setUsuariosClientes([]); 
+
+    if (usuario.uid) {
+      const qServicios = query(collection(db, "servicios"), where("uidCliente", "==", usuario.uid));
+      const snapshotServicios = await getDocs(qServicios);
+      const serviciosList = snapshotServicios.docs.map(doc => ({
+        ...doc.data(),
+        referencia: doc.id,
+        fechaCreacion: doc.data().fechaCreacion instanceof Timestamp ? doc.data().fechaCreacion.toDate() : new Date(doc.data().fechaCreacion),
+        fechaAsignacion: doc.data().fechaAsignacion instanceof Timestamp ? doc.data().fechaAsignacion.toDate() : (doc.data().fechaAsignacion ? new Date(doc.data().fechaAsignacion) : undefined),
+        fechaFinalizacion: doc.data().fechaFinalizacion instanceof Timestamp ? doc.data().fechaFinalizacion.toDate() : (doc.data().fechaFinalizacion ? new Date(doc.data().fechaFinalizacion) : undefined),
+      } as Servicio));
+      setServiciosUsuario(serviciosList);
     }
-    setServiciosUsuario(serviciosList);
   };
 
-  const deudaServicios = serviciosUsuario
-    .filter(s => s.estadoServicio === "Completado") // Usa estadoServicio
-    .reduce((acc, s) => acc + (s.costoFinalAcordado || s.costoTotalCotizado || 0), 0); // Usa costoFinalAcordado o costoTotalCotizado
-
-  const handleEditarEstado = (referencia: string, estadoActual: Servicio['estadoServicio']) => {
-    setEditandoEstado(referencia);
-    setNuevoEstadoServicio(estadoActual);
-  };
-
-  const handleGuardarEstado = async (servicio: Servicio) => {
-    if (!nuevoEstadoServicio) return;
+  const handleUpdateEstadoServicio = async (referencia: string, nuevoEstado: Servicio['estadoServicio']) => {
     try {
-      await setDoc(doc(db, "solicitudes", servicio.referencia), {
-        ...servicio,
-        estadoServicio: nuevoEstadoServicio // Actualiza estadoServicio
-      });
+      const servicioRef = doc(db, "servicios", referencia);
+      await updateDoc(servicioRef, { estadoServicio: nuevoEstado });
       alert("Estado del servicio actualizado.");
       setEditandoEstado(null);
-      if (usuarioSeleccionado) await handleSelectUsuario(usuarioSeleccionado); // Refrescar servicios
+      
+      // Actualizar la lista de servicios del usuario seleccionado si existe
+      if (usuarioSeleccionado && usuarioSeleccionado.uid) {
+        const qServicios = query(collection(db, "servicios"), where("uidCliente", "==", usuarioSeleccionado.uid));
+        const snapshotServicios = await getDocs(qServicios);
+        const serviciosList = snapshotServicios.docs.map(sDoc => ({ // Renombrado doc a sDoc para evitar conflicto
+            ...sDoc.data(),
+            referencia: sDoc.id,
+            fechaCreacion: sDoc.data().fechaCreacion instanceof Timestamp ? sDoc.data().fechaCreacion.toDate() : new Date(sDoc.data().fechaCreacion),
+            fechaAsignacion: sDoc.data().fechaAsignacion instanceof Timestamp ? sDoc.data().fechaAsignacion.toDate() : (sDoc.data().fechaAsignacion ? new Date(sDoc.data().fechaAsignacion) : undefined),
+            fechaFinalizacion: sDoc.data().fechaFinalizacion instanceof Timestamp ? sDoc.data().fechaFinalizacion.toDate() : (sDoc.data().fechaFinalizacion ? new Date(sDoc.data().fechaFinalizacion) : undefined),
+        } as Servicio));
+        setServiciosUsuario(serviciosList);
+      }
+      // Actualizar la lista general de servicios si estamos en esa vista
+      if (currentView === "verificarServicios") {
+        fetchAllServices(); // Esto recargará y actualizará filteredServices a través de los useEffects
+      }
+
     } catch (error) {
-      console.error("Error actualizando estado: ", error);
-      alert("Error actualizando estado del servicio.");
+      console.error("Error actualizando estado del servicio: ", error);
+      alert("Error al actualizar el estado.");
     }
   };
   
-  const estadosServicioPosibles: Servicio['estadoServicio'][] = [
-    'PendientePagoInspeccion', 'PendienteAsignacionInspeccion', 'InspeccionAsignada',
-    'PendienteCotizacionCliente', 'CotizacionAprobada', 'EnProceso',
-    'EnRevisionCliente', 'Completado', 'CanceladoPorCliente', 'CanceladoPorEmpleado', 'Disputa'
-  ];
-
-
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="loader">Loading...</div>
-      </div>
-    );
+    return <div className="flex justify-center items-center h-screen"><p>Cargando panel de administración...</p></div>;
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <NavBar />
-      <div className="container mx-auto p-4 bg-gray-100 min-h-screen pt-32 pb-40">
-        <h1 className="text-3xl font-bold mb-6 text-[var(--color-dark-blue)]">Panel de Administración</h1>
-        <p className="mb-4 text-gray-700">Bienvenido al panel de administración.</p>
-        <Link href="/">
-          <span className="text-[var(--color-light-blue)] hover:underline">Volver al inicio</span>
-        </Link>
-        
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4 text-[var(--color-dark-blue)]">Registrar Nuevo Empleado</h2>
-          <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow-md">
-            {/* Campos del formulario para registrar empleado (Usuario con tipoUsuario='empleado') */}
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">CI:</label>
-              <input
-                type="text"
-                name="ci"
-                value={formData.ci}
-                onChange={handleChange}
-                className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                placeholder="Ej: V12345678"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[var(--color-dark-blue)]">Nombre:</label>
-                <input
-                  type="text"
-                  name="nombre" // Este input actualiza el estado 'nombre' local
-                  value={nombre}
-                  onChange={handleNombreChange}
-                  className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                  placeholder="Ej: Javier"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-[var(--color-dark-blue)]">Apellido:</label>
-                <input
-                  type="text"
-                  name="apellido" // Este input actualiza el estado 'apellido' local
-                  value={apellido}
-                  onChange={handleApellidoChange}
-                  className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                  placeholder="Ej: Alburges"
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                placeholder="Ej: gearsoftca@gmail.com"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">LinkedIn (Opcional):</label>
-              <input
-                type="url"
-                name="linkedin"
-                value={formData.linkedin}
-                onChange={handleChange}
-                className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                placeholder="Ej: https://www.linkedin.com/company/gearsoftca/"
-              />
-            </div>
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">Número de Teléfono:</label>
-              <input
-                type="text"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleChange}
-                className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                placeholder="Ej: 04127521730"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">Servicios Habilitados:</label>
-              {["Electricidad", "Plomería", "Refrigeración", "Construcción", "Servicio Doméstico"].map((service) => (
-                <div key={service}>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      name="serviciosHabilitados" // El 'name' aquí es manejado en handleChange para actualizar el array
-                      value={service}
-                      checked={(formData.serviciosHabilitados || []).includes(service)}
-                      onChange={handleChange}
-                      className="form-checkbox"
-                    />
-                    <span className="ml-2 text-[var(--color-dark-blue)]">{service}</span>
-                  </label>
+      <div className="flex flex-1 pt-16">
+        <AdminSidebar onSelectView={handleSelectView} currentView={currentView} />
+        <main className="flex-1 p-6 bg-gray-100 text-gray-800"> {/* Asegurar contraste */}
+          {currentView === "registrarUsuario" && (
+            <section id="registrar-empleado">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-800">Registrar Nuevo Empleado</h2>
+              <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre:</label>
+                    <input type="text" name="nombre" id="nombre" value={nombre} onChange={handleNombreChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="apellido" className="block text-sm font-medium text-gray-700">Apellido:</label>
+                    <input type="text" name="apellido" id="apellido" value={apellido} onChange={handleApellidoChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="ci" className="block text-sm font-medium text-gray-700">CI (Será el ID del empleado):</label>
+                    <input type="text" name="ci" id="ci" value={formData.ci} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
+                    <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="telefono" className="block text-sm font-medium text-gray-700">Teléfono:</label>
+                    <input type="tel" name="telefono" id="telefono" value={formData.telefono} onChange={handleChange} required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="linkedin" className="block text-sm font-medium text-gray-700">LinkedIn (Opcional):</label>
+                    <input type="url" name="linkedin" id="linkedin" value={formData.linkedin} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
+                  <div>
+                    <label htmlFor="uid" className="block text-sm font-medium text-gray-700">UID (Opcional, si ya existe en Firebase Auth):</label>
+                    <input type="text" name="uid" id="uid" value={formData.uid || ""} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" />
+                  </div>
                 </div>
-              ))}
-            </div>
-            <div>
-              <label className="block text-[var(--color-dark-blue)]">UID (Firebase Auth UID):</label>
-              <input
-                type="text"
-                name="uid"
-                value={formData.uid}
-                onChange={handleChange}
-                className="w-full p-2 border border-[var(--color-gray)] rounded text-black"
-                placeholder="UID del usuario en Firebase Authentication"
-                required
-              />
-            </div>
-            <button type="submit" className="px-4 py-2 bg-[var(--color-dark-blue)] text-[var(--color-white)] rounded hover:bg-opacity-90">Registrar Empleado</button>
-          </form>
-        </div>
-
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4 text-[var(--color-dark-blue)]">Buscar Empleados</h2>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="w-full p-2 border border-[var(--color-gray)] rounded text-black mb-4"
-            placeholder="Buscar empleados por CI"
-          />
-          <ul className="text-black mt-4 space-y-3">
-            {usuariosEmpleados.map(empleado => (
-              <li key={empleado.uid || empleado.ci} className="p-4 border border-[var(--color-gray)] rounded bg-white shadow">
-                <p><strong>Nombre:</strong> {empleado.userName}</p>
-                <p><strong>CI:</strong> {empleado.ci}</p>
-                <p><strong>Email:</strong> {empleado.email}</p>
-                <p><strong>Teléfono:</strong> {empleado.telefono}</p>
-                {empleado.linkedin && <p><strong>LinkedIn:</strong> <a href={empleado.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{empleado.linkedin}</a></p>}
-                <p><strong>Servicios Habilitados:</strong> {(empleado.serviciosHabilitados || []).join(", ")}</p>
-                <p><strong>UID:</strong> {empleado.uid}</p>
-                <p><strong>Servicios Realizados:</strong> {empleado.numeroServiciosRealizados || 0}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4 text-[var(--color-dark-blue)]">Buscar Usuarios (Clientes)</h2>
-          <input
-            type="text"
-            value={usuarioSearch}
-            onChange={handleUsuarioSearch}
-            className="w-full p-2 border border-[var(--color-gray)] rounded text-black mb-2"
-            placeholder="Buscar por nombre, email o CI (clientes)"
-          />
-          <input
-            type="text"
-            value={referenciaFiltro}
-            onChange={handleReferenciaFiltro}
-            className="w-full p-2 border border-[var(--color-gray)] rounded text-black mb-4"
-            placeholder="Filtrar por número de referencia de servicio (opcional)"
-          />
-          <ul className="text-black mt-4 space-y-3">
-            {usuariosClientes.map(usuario => (
-              <li key={usuario.uid} className="p-4 border border-[var(--color-gray)] rounded bg-white shadow cursor-pointer hover:bg-[var(--color-light-blue)]/10" onClick={() => handleSelectUsuario(usuario)}>
-                <p><strong>Nombre:</strong> {usuario.userName}</p>
-                <p><strong>Email:</strong> {usuario.email}</p>
-                <p><strong>Teléfono:</strong> {usuario.telefono}</p>
-                <p><strong>CI:</strong> {usuario.ci}</p>
-                <p><strong>Saldo:</strong> {usuario.saldo ?? "N/A"}</p>
-                <p><strong>Deuda:</strong> {usuario.deuda ?? "N/A"}</p>
-              </li>
-            ))}
-          </ul>
-
-          {usuarioSeleccionado && (
-            <div className="mt-6 bg-white p-6 rounded shadow-md">
-              <h3 className="text-xl font-semibold mb-2 text-[var(--color-dark-blue)]">Panel de Usuario: {usuarioSeleccionado.userName}</h3>
-              <p className="mb-2 text-[var(--color-dark-blue)] font-semibold">Deuda por servicios completados: <span className="text-red-600">{deudaServicios} USD</span></p>
-              <h4 className="text-lg font-semibold mb-2 text-[var(--color-dark-blue)]">Servicios solicitados</h4>
-              {serviciosUsuario.length === 0 ? (
-                <p className="text-gray-500">No se encontraron servicios para este usuario.</p>
-              ) : (
-                <ul className="text-black mt-2 space-y-3">
-                  {serviciosUsuario.map((servicio) => (
-                    <li key={servicio.referencia} className="p-4 border border-[var(--color-gray)] rounded">
-                      <p><strong>Referencia:</strong> {servicio.referencia}</p>
-                      <p><strong>Servicio:</strong> {servicio.servicioSolicitado} - {servicio.descripcion}</p>
-                      <p><strong>Estado Actual:</strong> <span className="font-semibold">{servicio.estadoServicio}</span></p>
-                      <p><strong>Persona Asignada:</strong> {servicio.personaAsignadaNombre || "No asignado"}</p>
-                      <p><strong>Fecha Creación:</strong> {servicio.fechaCreacion instanceof Timestamp ? servicio.fechaCreacion.toDate().toLocaleDateString() : (servicio.fechaCreacion as Date)?.toLocaleDateString() || 'N/A'}</p>
-                      {servicio.costoInspeccion > 0 && <p><strong>Costo Inspección:</strong> {servicio.costoInspeccion} USD</p>}
-                      {servicio.pagoInspeccionRealizado && <p><strong>Pago Inspección:</strong> Realizado</p>}
-                      {servicio.costoTotalCotizado && <p><strong>Costo Cotizado:</strong> {servicio.costoTotalCotizado} USD</p>}
-                      {servicio.costoFinalAcordado && <p><strong>Costo Final:</strong> {servicio.costoFinalAcordado} USD</p>}
-                      
-                      {editandoEstado === servicio.referencia ? (
-                        <div className="mt-2">
-                          <select
-                            value={nuevoEstadoServicio}
-                            onChange={(e) => setNuevoEstadoServicio(e.target.value as Servicio['estadoServicio'])}
-                            className="w-full p-2 border border-[var(--color-gray)] rounded text-black mb-2"
-                          >
-                            {estadosServicioPosibles.map(estado => (
-                              <option key={estado} value={estado}>{estado}</option>
-                            ))}
-                          </select>
-                          <button onClick={() => handleGuardarEstado(servicio)} className="px-3 py-1 bg-green-500 text-white rounded mr-2 hover:bg-green-600">Guardar</button>
-                          <button onClick={() => setEditandoEstado(null)} className="px-3 py-1 bg-gray-300 text-black rounded hover:bg-gray-400">Cancelar</button>
-                        </div>
-                      ) : (
-                        <button onClick={() => handleEditarEstado(servicio.referencia, servicio.estadoServicio)} className="mt-2 px-3 py-1 bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] rounded hover:bg-opacity-90">
-                          Cambiar Estado
-                        </button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Servicios Habilitados:</label>
+                  <div className="mt-2 space-y-2">
+                    {["Plomería", "Electricidad", "Albañilería", "Pintura", "Jardinería", "Otros"].map((servicio) => (
+                      <div key={servicio} className="flex items-center">
+                        <input
+                          id={`servicio-${servicio}`}
+                          name="serviciosHabilitados"
+                          type="checkbox"
+                          value={servicio}
+                          checked={formData.serviciosHabilitados?.includes(servicio)}
+                          onChange={handleChange}
+                          className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        />
+                        <label htmlFor={`servicio-${servicio}`} className="ml-2 block text-sm text-gray-900">
+                          {servicio}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Registrar Empleado
+                </button>
+              </form>
+            </section>
           )}
-        </div>
+
+          {currentView === "verificarUsuarios" && (
+            <section id="verificar-usuarios">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-800">Verificar Usuarios</h2>
+              <div className="mb-4">
+                <input 
+                  type="text" 
+                  placeholder="Buscar usuario por CI o Nombre..."
+                  value={usuarioSearch}
+                  onChange={handleUsuarioSearchChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+                />
+                {usuariosClientes.length > 0 && (
+                  <ul className="border border-gray-300 rounded-md mt-1 bg-white absolute z-10 w-auto max-h-60 overflow-y-auto shadow-lg">
+                    {usuariosClientes.map((user) => (
+                      <li 
+                        key={user.uid} 
+                        onClick={() => handleSelectUsuario(user)} 
+                        className="p-2 hover:bg-gray-100 cursor-pointer text-gray-900"
+                      >
+                        {user.nombreUsuario} ({user.ci}) - {user.tipoUsuario}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {usuarioSeleccionado && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">Detalles de {usuarioSeleccionado.nombreUsuario}</h3>
+                  <p className="text-gray-700"><strong>CI:</strong> {usuarioSeleccionado.ci}</p>
+                  <p className="text-gray-700"><strong>Email:</strong> {usuarioSeleccionado.email}</p>
+                  <p className="text-gray-700"><strong>Teléfono:</strong> {usuarioSeleccionado.telefono}</p>
+                  <p className="text-gray-700"><strong>Tipo:</strong> {usuarioSeleccionado.tipoUsuario}</p>
+                  <p className="text-gray-700"><strong>Fecha Registro:</strong> {usuarioSeleccionado.fechaRegistro instanceof Timestamp ? usuarioSeleccionado.fechaRegistro.toDate().toLocaleDateString() : (usuarioSeleccionado.fechaRegistro ? new Date(usuarioSeleccionado.fechaRegistro).toLocaleDateString() : 'N/A')}</p>
+                  
+                  {usuarioSeleccionado.tipoUsuario === 'empleado' && (
+                    <>
+                      <p className="text-gray-700"><strong>Servicios Habilitados:</strong> {usuarioSeleccionado.serviciosHabilitados?.join(', ')}</p>
+                      <p className="text-gray-700"><strong>Servicios Realizados:</strong> {usuarioSeleccionado.numeroServiciosRealizados}</p>
+                    </>
+                  )}
+                  {usuarioSeleccionado.tipoUsuario === 'cliente' && (
+                    <>
+                      <p className="text-gray-700"><strong>Servicios Solicitados:</strong> {usuarioSeleccionado.numeroServiciosSolicitados}</p>
+                    </>
+                  )}
+
+                  <h4 className="text-lg font-semibold mt-6 mb-2 text-gray-800">Servicios Asociados</h4>
+                  {serviciosUsuario.length > 0 ? (
+                    <ul className="space-y-3">
+                      {serviciosUsuario.map(servicio => (
+                        <li key={servicio.referencia} className="p-3 border rounded-md bg-gray-50 shadow-sm">
+                          <p className="text-gray-700"><strong>Ref:</strong> {servicio.referencia}</p>
+                          <p className="text-gray-700"><strong>Servicio:</strong> {servicio.servicioSolicitado}</p>
+                          <p className="text-gray-700"><strong>Descripción:</strong> {servicio.descripcion}</p>
+                          <p className="text-gray-700"><strong>Estado:</strong> 
+                            {editandoEstado === servicio.referencia ? (
+                              <select 
+                                value={nuevoEstadoServicio}
+                                onChange={(e) => setNuevoEstadoServicio(e.target.value as Servicio['estadoServicio'])}
+                                className="ml-2 p-1 border rounded text-gray-900 bg-white"
+                              >
+                                <option value="pendientePago">Pendiente de Pago</option>
+                                <option value="pendienteAsignacion">Pendiente de Asignación</option>
+                                <option value="asignado">Asignado</option>
+                                <option value="pendienteAprobacion">Pendiente de Aprobación</option>
+                                <option value="aprobado">Aprobado</option>
+                                <option value="enCurso">En Curso</option>
+                                <option value="revision">Revisión</option>
+                                <option value="completado">Completado</option>
+                                <option value="canceladoCliente">Cancelado por Cliente</option>
+                                <option value="canceladoEmpleado">Cancelado por Empleado</option>
+                                <option value="disputa">En Disputa</option>
+                              </select>
+                            ) : <span className="font-medium">{servicio.estadoServicio}</span>}
+                          </p>
+                          <p className="text-gray-700"><strong>Fecha Creación:</strong> {servicio.fechaCreacion instanceof Date ? servicio.fechaCreacion.toLocaleDateString() : (servicio.fechaCreacion ? new Date(servicio.fechaCreacion.toString()).toLocaleDateString() : 'N/A')}</p>
+                          {editandoEstado === servicio.referencia ? (
+                            <div className="mt-2">
+                              <button onClick={() => handleUpdateEstadoServicio(servicio.referencia, nuevoEstadoServicio)} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 mr-2">Guardar</button>
+                              <button onClick={() => setEditandoEstado(null)} className="px-3 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cancelar</button>
+                            </div>
+                          ) : (
+                            <button onClick={() => { setEditandoEstado(servicio.referencia); setNuevoEstadoServicio(servicio.estadoServicio); }} className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                              Cambiar Estado
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-600">No hay servicios asociados a este usuario.</p>
+                  )}
+                </div>
+              )}
+            </section>
+          )}
+
+          {currentView === "verificarServicios" && (
+            <section id="verificar-servicios">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-800">Verificar Todos los Servicios</h2>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Buscar servicios por Ref, Tipo, Cliente, Empleado o Estado..."
+                  value={serviceSearchTerm}
+                  onChange={(e) => setServiceSearchTerm(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+                />
+              </div>
+
+              {loadingServices ? (
+                <p className="text-gray-600">Cargando servicios...</p>
+              ) : filteredServices.length > 0 ? (
+                <div className="overflow-x-auto bg-white p-4 rounded-lg shadow-md">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Referencia</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empleado</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Creación</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {filteredServices.map(servicio => (
+                        <tr key={servicio.referencia}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{servicio.referencia}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{servicio.servicioSolicitado}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{servicio.nombreCliente}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{servicio.nombreEmpleado || 'N/A'}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {servicio.fechaCreacion instanceof Date ? servicio.fechaCreacion.toLocaleDateString() : (servicio.fechaCreacion ? new Date(servicio.fechaCreacion.toString()).toLocaleDateString() : 'N/A')}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            {editandoEstado === servicio.referencia ? (
+                              <select 
+                                value={nuevoEstadoServicio}
+                                onChange={(e) => setNuevoEstadoServicio(e.target.value as Servicio['estadoServicio'])}
+                                className="p-1 border rounded text-gray-900 bg-white text-xs" // Reducido tamaño para tabla
+                              >
+                                <option value="pendientePago">Pendiente Pago</option>
+                                <option value="pendienteAsignacion">Pend. Asignación</option>
+                                <option value="asignado">Asignado</option>
+                                <option value="pendienteAprobacion">Pend. Aprobación</option>
+                                <option value="aprobado">Aprobado</option>
+                                <option value="enCurso">En Curso</option>
+                                <option value="revision">Revisión</option>
+                                <option value="completado">Completado</option>
+                                <option value="canceladoCliente">Cancelado (Cli)</option>
+                                <option value="canceladoEmpleado">Cancelado (Emp)</option>
+                                <option value="disputa">Disputa</option>
+                              </select>
+                            ) : <span className="font-medium">{servicio.estadoServicio}</span>}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            {editandoEstado === servicio.referencia ? (
+                              <>
+                                <button onClick={() => handleUpdateEstadoServicio(servicio.referencia, nuevoEstadoServicio)} className="text-green-600 hover:text-green-900 mr-2 text-xs">Guardar</button>
+                                <button onClick={() => setEditandoEstado(null)} className="text-gray-600 hover:text-gray-900 text-xs">Cancelar</button>
+                              </>
+                            ) : (
+                              <button onClick={() => { setEditandoEstado(servicio.referencia); setNuevoEstadoServicio(servicio.estadoServicio); }} className="text-indigo-600 hover:text-indigo-900 text-xs">
+                                Cambiar Estado
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-gray-600">No se encontraron servicios con los criterios de búsqueda o no hay servicios registrados.</p>
+              )}
+            </section>
+          )}
+        </main>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
