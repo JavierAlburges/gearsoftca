@@ -1,9 +1,15 @@
+"use client";
+
 import { NavBar } from "@/components/nav-bar";
 import { Footer } from "@/components/footer";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 
 export default function Documentacion() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
   return (
     <>
       <NavBar />
@@ -26,7 +32,7 @@ export default function Documentacion() {
                     href="https://drive.google.com/file/d/1JHzDf3b5qkFaxw9mUEDLE9fgtliRwNfi/view"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >Presentación del curso</a>
                 </li>
                 <li>
@@ -34,7 +40,7 @@ export default function Documentacion() {
                     href="https://code.visualstudio.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >Visual Studio Code (Editor de código)</a>
                 </li>
                 <li>
@@ -42,7 +48,7 @@ export default function Documentacion() {
                     href="https://sqlitebrowser.org/dl/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >SQLite Database Browser (Gestor de bases de datos)</a>
                 </li>
                 <li>
@@ -50,7 +56,7 @@ export default function Documentacion() {
                     href="https://excalidraw.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >Excalidraw (Mapas mentales y pizarra)</a>
                 </li>
                 <li>
@@ -58,7 +64,7 @@ export default function Documentacion() {
                     href="https://drive.google.com/drive/u/0/folders/1VVpmGGL3RA4k6rlPKwV19adtb3AU8Yd6"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >Material del curso</a>
                 </li>
                 <li>
@@ -66,7 +72,7 @@ export default function Documentacion() {
                     href="https://spotify-a2u.pages.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >Página de muestra (Copia de Spotify)</a>
                 </li>
             </ul>
@@ -82,7 +88,7 @@ export default function Documentacion() {
                     href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Structuring_content"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Documentación para el desarrollo web
                   </a>
@@ -92,7 +98,7 @@ export default function Documentacion() {
                     href="https://www.aprendejavascript.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Curso de JavaScript de Midudev
                   </a>
@@ -102,7 +108,7 @@ export default function Documentacion() {
                     href="https://developer.android.com/codelabs/basic-android-kotlin-compose-sql?hl=es-419&continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-6-pathway-1%3Fhl%3Des-419%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-sql#0"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Curso de SQL de Google en Español
                   </a>
@@ -112,7 +118,7 @@ export default function Documentacion() {
                     href="https://sqlbolt.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Práctica de SQL Interactiva (Inglés)
                   </a>
@@ -122,7 +128,7 @@ export default function Documentacion() {
                     href="https://developer.android.com/courses/android-basics-compose/course?hl=es-419"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Documentación de Android Compose
                   </a>
@@ -132,7 +138,7 @@ export default function Documentacion() {
                     href="https://vscode.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Visual Studio Code Online
                   </a>
@@ -142,7 +148,7 @@ export default function Documentacion() {
                     href="https://play.google.com/store/apps/details?id=com.foxdebug.acodefree&pcampaignid=web_share"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     App para editar código en teléfono
                   </a>
@@ -152,7 +158,7 @@ export default function Documentacion() {
                     href="https://www.canva.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Página de Canva
                   </a>
@@ -162,7 +168,7 @@ export default function Documentacion() {
                     href="https://nodejs.org/es"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Página de Node.js
                   </a>
@@ -172,7 +178,7 @@ export default function Documentacion() {
                     href="https://expressjs.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Página de Express.js
                   </a>
@@ -202,7 +208,7 @@ export default function Documentacion() {
                     href="https://angular.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Angular
                   </a>
@@ -212,7 +218,7 @@ export default function Documentacion() {
                     href="https://es.react.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     React
                   </a>
@@ -222,7 +228,7 @@ export default function Documentacion() {
                     href="https://tailwindcss.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Tailwind CSS
                   </a>
@@ -232,7 +238,7 @@ export default function Documentacion() {
                     href="https://astro.build/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Astro
                   </a>
@@ -242,7 +248,7 @@ export default function Documentacion() {
                     href="https://nextjs.org/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Next.js
                   </a>
@@ -252,7 +258,7 @@ export default function Documentacion() {
                     href="https://reactnative.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     React Native
                   </a>
@@ -262,7 +268,7 @@ export default function Documentacion() {
                     href="https://expo.dev/go"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                    className="block bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                   >
                     Expo Go
                   </a>
@@ -288,7 +294,7 @@ export default function Documentacion() {
                 href="https://www.creative-tim.com/twcomponents/cheatsheet"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 Tailwind CSS Cheatsheet
               </a>
@@ -296,7 +302,7 @@ export default function Documentacion() {
                 href="https://watercss.kognise.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 Water CSS
               </a>
@@ -304,7 +310,7 @@ export default function Documentacion() {
                 href="https://boltcss.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 Bolt CSS
               </a>
@@ -312,7 +318,7 @@ export default function Documentacion() {
                 href="https://vercel.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 Vercel
               </a>
@@ -320,7 +326,7 @@ export default function Documentacion() {
                 href="https://sites.google.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 Google Sites
               </a>
@@ -328,7 +334,7 @@ export default function Documentacion() {
                 href="https://github.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--color-black)] transition"
+                className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-4 py-2 rounded-lg shadow-md text-center hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
               >
                 GitHub
               </a>
@@ -348,12 +354,12 @@ export default function Documentacion() {
                   className="rounded-lg"
                   style={{ border: "none" }}
                 ></iframe>
-                <div className="bg-[var(--color-dark-blue)] text-[var(--color-white)] text-center py-2">
+                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2">
                   <a
                     href="https://flexboxfroggy.com/#es"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline"
+                    className="hover:underline no-underline"
                   >
                     Juega y Aprende CSS Flexbox
                   </a>
@@ -368,12 +374,12 @@ export default function Documentacion() {
                   className="rounded-lg"
                   style={{ border: "none" }}
                 ></iframe>
-                <div className="bg-[var(--color-dark-blue)] text-[var(--color-white)] text-center py-2">
+                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2">
                   <a
                     href="https://cssgridgarden.com/#es"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline"
+                    className="hover:underline no-underline"
                   >
                     Juega y Aprende CSS Grid
                   </a>
@@ -401,7 +407,7 @@ export default function Documentacion() {
                   href="https://learn.microsoft.com/es-es/training/browse/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[var(--color-dark-blue)] text-[var(--color-white)] px-6 py-3 rounded-lg shadow-md hover:bg-[var(--color-black)] transition"
+                  className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] px-6 py-3 rounded-lg shadow-md hover:bg-[var(--brand-light-blue)] hover:text-[var(--brand-dark-blue)] border border-[var(--brand-dark-blue)] transition no-underline"
                 >
                   Explorar Microsoft Learn
                 </a>

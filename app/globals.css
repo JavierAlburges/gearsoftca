@@ -134,6 +134,11 @@ a:hover, a:focus {
   text-decoration: underline;
 }
 
+/* Utilidad para eliminar subrayado en enlaces incluso en hover/focus */
+.no-underline, .no-underline:hover, .no-underline:focus {
+  text-decoration: none !important;
+}
+
 /* Estilos para Botones */
 button, .button { /* .button para aplicar estilos de botón a etiquetas <a> u otros elementos */
   display: inline-flex;

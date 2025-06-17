@@ -7,10 +7,12 @@ import Image from "next/image"
 import { authenticateWithGoogle, getUserDataIfAdmin } from "@/lib/firebaseUtils"; // Cambiado verifyUserInCollection a getUserDataIfAdmin
 import { signOut, onAuthStateChanged, User } from "firebase/auth"; // Importar User
 import { auth } from "@/firebaseConfig";
+import { FaBars } from "react-icons/fa"; // Icono hamburguesa
 
 export function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isVerified, setIsVerified] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -62,52 +64,63 @@ export function NavBar() {
           <Image src={"/images/gearsoftlogo.png"} width={50} height={50} alt="GearSoftCA Logo"/>
           <span className="text-xl font-bold">GearSoftCA</span>
         </Link>
-        <div className="flex items-center space-x-4 md:hidden">
-          {!isLoggedIn && (
-            <button 
-              onClick={handleLogin} 
-              className="button button-primary text-sm font-medium flex items-center" // Botón primario
-            >
-              <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2 md:hidden"/>
-              <span className="hidden md:inline">Login</span> {/* Texto para desktop */}
-            </button>
-          )}
-          {isLoggedIn && isVerified && (
-            <button 
-              onClick={() => router.push("/administracion")} 
-              className="button button-primary text-sm font-medium flex items-center" // Botón primario
-            >
-              <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
-              <span className="hidden md:inline">Admin</span> {/* Texto para desktop */}
-            </button>
-          )}
-          {isLoggedIn && (
-            <button 
-              onClick={handleLogout} 
-              className="button button-secondary text-sm font-medium" // Botón secundario
-            >
-              Logout
-            </button>
-          )}
+        {/* Menú móvil: hamburguesa */}
+        <div className="flex items-center md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="focus:outline-none p-2"
+            aria-label="Abrir menú"
+          >
+            <FaBars size={28} />
+          </button>
         </div>
+        {/* Menú móvil desplegable */}
+        {menuOpen && (
+          <div className="absolute top-16 right-4 bg-[var(--theme-primary-background)] border border-[var(--theme-border)] rounded-lg shadow-lg p-4 flex flex-col space-y-4 md:hidden z-50">
+            <Link href="/#servicios" className="no-underline text-[var(--theme-text-on-primary)] font-bold rounded-md transition-colors hover:bg-[var(--brand-white)] hover:text-[var(--brand-dark-blue)] active:bg-[var(--brand-white)] active:text-[var(--brand-dark-blue)] px-2 py-2" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+              Servicios
+            </Link>
+            <Link href="/#precios" className="no-underline text-[var(--theme-text-on-primary)] font-bold rounded-md transition-colors hover:bg-[var(--brand-white)] hover:text-[var(--brand-dark-blue)] active:bg-[var(--brand-white)] active:text-[var(--brand-dark-blue)] px-2 py-2" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+              Precios
+            </Link>
+            <Link href="/#equipo" className="no-underline text-[var(--theme-text-on-primary)] font-bold rounded-md transition-colors hover:bg-[var(--brand-white)] hover:text-[var(--brand-dark-blue)] active:bg-[var(--brand-white)] active:text-[var(--brand-dark-blue)] px-2 py-2" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+              Equipo
+            </Link>
+            <Link href="/politicasDePrivacidad" className="no-underline text-[var(--theme-text-on-primary)] font-bold rounded-md transition-colors hover:bg-[var(--brand-white)] hover:text-[var(--brand-dark-blue)] active:bg-[var(--brand-white)] active:text-[var(--brand-dark-blue)] px-2 py-2" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+              Políticas
+            </Link>
+            {isLoggedIn && isVerified && (
+              <button onClick={() => { router.push("/administracion"); setMenuOpen(false); }} className="button button-primary text-sm font-medium flex items-center">
+                <Image src="/images/admin-panel-icon.png" width={20} height={20} alt="Admin Panel Icon" className="mr-2"/>
+                Admin
+              </button>
+            )}
+            {isLoggedIn && (
+              <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="button button-secondary text-sm font-medium">
+                Logout
+              </button>
+            )}
+          </div>
+        )}
         {/* Menú para Desktop */}
-        <div className="hidden md:flex items-center space-x-1"> {/* Reducir space-x para más elementos */}
-          <Link href="/#servicios" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors">
+        <div className="hidden md:flex items-center space-x-1">
+          <Link href="/#servicios" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors no-underline">
             Servicios
           </Link>
-          <Link href="/#precios" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors">
+          <Link href="/#precios" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors no-underline">
             Precios
           </Link>
-          <Link href="/#equipo" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors">
+          <Link href="/#equipo" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors no-underline">
             Equipo
           </Link>
-          <Link href="/politicasDePrivacidad" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors">
+          <Link href="/politicasDePrivacidad" className="inline-flex items-center justify-center min-h-[var(--button-height)] px-[var(--spacing-md)] py-[var(--spacing-xs)] text-[var(--theme-text-on-primary)] font-bold rounded-[var(--radius-md)] hover:text-[var(--theme-accent)] hover:bg-[rgba(var(--brand-white-rgb),0.1)] transition-colors no-underline">
             Políticas
           </Link>
+          {/* Botones de login/admin/logout solo en desktop */}
           {!isLoggedIn && (
             <button 
               onClick={handleLogin} 
-              className="button button-primary text-sm font-medium flex items-center ml-2" // Margen izquierdo para separar
+              className="button button-primary text-sm font-medium flex items-center ml-2"
             >
               <Image src="/images/logo-google.png" width={20} height={20} alt="Google Icon" className="mr-2"/>
               Login
