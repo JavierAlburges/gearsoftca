@@ -345,16 +345,18 @@ export default function Documentacion() {
               Aprende Jugando
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[var(--brand-dark-blue)] opacity-90">
-              <div className="rounded-lg shadow-lg overflow-hidden">
-                <iframe
-                  src="https://flexboxfroggy.com/#es"
-                  title="Flexbox Froggy"
-                  width="100%"
-                  height="400"
-                  className="rounded-lg"
-                  style={{ border: "none" }}
-                ></iframe>
-                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2">
+              <div className="rounded-lg shadow-lg overflow-hidden flex flex-col items-center">
+                <div className="w-full h-[260px] flex items-center justify-center bg-gray-100">
+                  <Image
+                    src="/images/flexbox-froggy.png"
+                    alt="Flexbox Froggy"
+                    width={400}
+                    height={260}
+                    className="rounded-lg object-cover w-full h-full"
+                    priority
+                  />
+                </div>
+                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2 w-full">
                   <a
                     href="https://flexboxfroggy.com/#es"
                     target="_blank"
@@ -365,16 +367,18 @@ export default function Documentacion() {
                   </a>
                 </div>
               </div>
-              <div className="rounded-lg shadow-lg overflow-hidden">
-                <iframe
-                  src="https://cssgridgarden.com/#es"
-                  title="CSS Grid Garden"
-                  width="100%"
-                  height="400"
-                  className="rounded-lg"
-                  style={{ border: "none" }}
-                ></iframe>
-                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2">
+              <div className="rounded-lg shadow-lg overflow-hidden flex flex-col items-center">
+                <div className="w-full h-[260px] flex items-center justify-center bg-gray-100">
+                  <Image
+                    src="/images/grid-garden.png"
+                    alt="CSS Grid Garden"
+                    width={400}
+                    height={260}
+                    className="rounded-lg object-cover w-full h-full"
+                    priority
+                  />
+                </div>
+                <div className="bg-[var(--brand-dark-blue)] text-[var(--brand-white)] text-center py-2 w-full">
                   <a
                     href="https://cssgridgarden.com/#es"
                     target="_blank"

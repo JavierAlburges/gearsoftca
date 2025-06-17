@@ -60,7 +60,7 @@ export function NavBar() {
   return (
     <nav className="bg-[var(--theme-primary-background)] text-[var(--theme-text-on-primary)] p-4 border-b border-[var(--theme-border)] fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold flex items-center space-x-2">
+        <Link href="/" className="text-xl font-bold flex items-center space-x-2 no-underline">
           <Image src={"/images/gearsoftlogo.png"} width={50} height={50} alt="GearSoftCA Logo"/>
           <span className="text-xl font-bold">GearSoftCA</span>
         </Link>
